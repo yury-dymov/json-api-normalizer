@@ -60,7 +60,7 @@ function extractMetaData(json, endpoint) {
       ids[object.type].push(object.id);
     });
 
-    keys(ids).forEach(type => ids[type] = join(ids[type], ','));
+    keys(ids).forEach((type) => { ids[type] = join(ids[type], ','); });
 
     ret.meta[endpoint].data = ids;
 
