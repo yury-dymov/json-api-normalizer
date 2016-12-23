@@ -23,17 +23,20 @@ function extract(json) {
       wrap(elem.relationships).forEach((relationship) => {
         const ids = [];
 
-        let type;
+        const mp = {};
 
         wrap(relationship).forEach((object) => {
           keys(object).forEach((key) => {
-            ids.push(object[key].data.id);
-            type = object[key].data.type;
+            mp[key] = mp[key] || {};
+            mp[key].id = mp[key].id || [];
+            mp[key].id.push(object[key].data.id);
+            mp[key].type = object[key].data.type;
           });
         });
 
-        ret[elem.type][elem.id].relationships = {};
-        ret[elem.type][elem.id].relationships[type] = join(ids, ',');
+        keys(mp).forEach(key => { mp[key].id = join(mp[key].id, ',') });
+
+        ret[elem.type][elem.id].relationships = mp;
       });
     }
   });

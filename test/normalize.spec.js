@@ -169,7 +169,10 @@ describe('relationships', () => {
           "id": 2620
         },
         relationships: {
-          question: "295"
+          question: {
+            id: "295",
+            type: "question"
+          }
         }
       }
     }
@@ -210,7 +213,10 @@ describe('meta', () => {
           "id": 2620
         },
         relationships: {
-          question: "295"
+          question: {
+            id: "295",
+            type: "question"
+          }
         }
       }
     },
@@ -254,7 +260,10 @@ describe('meta', () => {
           "id": 2620
         },
         relationships: {
-          question: "295"
+          question: {
+            id: "295",
+            type: "question"
+          }
         }
       }
     },
