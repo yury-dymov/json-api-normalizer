@@ -138,7 +138,7 @@ console.log(normalize(json, { endpoint: '/post-block/2620' }));
         type: "postBlock",
         id: "2620",
         relationships: {
-          "post-blocks": {
+          "question": {
             type: "question",
             id: "295"
           }      
@@ -257,7 +257,6 @@ console.log(normalize(json));
 {
   postBlock: {
     "1": {
-      type: "postBlock",
       attributes: {
         id: 1,
         camelMe: 1
@@ -272,7 +271,6 @@ console.log(normalize(json, { camelizeKeys: false }));
 {
   "post-block": {
     "1": {
-      type: "post-block",
       attributes: {
         id: 1,
         "camel-me": 1
