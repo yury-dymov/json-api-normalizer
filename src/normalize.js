@@ -21,20 +21,18 @@ function extract(json) {
 
     if (elem.relationships) {
       wrap(elem.relationships).forEach((relationship) => {
-        const ids = [];
-
         const mp = {};
 
         wrap(relationship).forEach((object) => {
           keys(object).forEach((key) => {
-            mp[key] = mp[key] || {};
-            mp[key].id = mp[key].id || [];
-            mp[key].id.push(object[key].data.id);
-            mp[key].type = object[key].data.type;
+            const ids = wrap(object[key].data).map(elem => elem.id);
+
+            mp[key] = {
+              id: ids.length == 1 ? ids[0].toString() : join(ids, ','),
+              type: wrap(object[key].data)[0].type
+            };
           });
         });
-
-        keys(mp).forEach(key => { mp[key].id = join(mp[key].id, ',') });
 
         ret[elem.type][elem.id].relationships = mp;
       });
@@ -56,16 +54,27 @@ function extractMetaData(json, endpoint) {
   ret.meta[endpoint].data = {};
 
   if (json.data) {
-    const ids = {};
+    const meta = [];
 
     wrap(json.data).forEach((object) => {
-      ids[object.type] = ids[object.type] || [];
-      ids[object.type].push(object.id);
+      const ret = { id: object.id, type: object.type };
+
+      if (object.relationships) {
+        keys(object.relationships).forEach((key) => {
+          ret.relationships = ret.relationships || {};
+
+          if (wrap(object.relationships[key].data).length > 0) {
+            const ids = wrap(object.relationships[key].data).map(elem => elem.id);
+
+            ret.relationships[key] = { type: wrap(object.relationships[key].data)[0].type, id: join(ids, ',') };
+          }
+        });
+      }
+
+      meta.push(ret);
     });
 
-    keys(ids).forEach((type) => { ids[type] = join(ids[type], ','); });
-
-    ret.meta[endpoint].data = ids;
+    ret.meta[endpoint].data = meta;
 
     if (json.links) {
       ret.meta[endpoint].links = json.links;

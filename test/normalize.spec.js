@@ -222,9 +222,16 @@ describe('meta', () => {
     },
     meta: {
       'posts/me': {
-        data: {
-          post: '2620'
-        }
+        data: [{
+          id: '2620',
+          type: 'post',
+          relationships: {
+            question: {
+              type: 'question',
+              id: '295'
+            }
+          }
+        }]
       }
     }
   }
@@ -269,9 +276,16 @@ describe('meta', () => {
     },
     meta: {
       'posts/me': {
-        data: {
-          post: '2620'
-        },
+        data: [{
+          type: 'post',
+          id: '2620',
+          relationships: {
+            question: {
+              type: 'question',
+              id: '295'
+            }
+          }
+        }],
         links: {
           next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
           first: "http://api.postie.loc/v1/posts/friends_feed/superyuri?page[cursor]=0"
@@ -303,6 +317,199 @@ describe('meta', () => {
 
     expect(isEqual(result, output2)).to.be.false;
   });
+});
 
+describe('complex', () => {
+    const json = {
+      data: [{
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29
+        },
+        id: "29",
+        relationships: {
+          "post-blocks": {
+            data: [{
+              type: "post-block",
+              id: "4601"
+            }, {
+              type: "post-block",
+              id: "2454"
+            }]
+          }
+        },
+        type: "question"
+      }],
+      included: [{
+        attributes: {id: 4601},
+        id: "4601",
+        relationships: {
+          user: {
+            data: {
+              type: "user",
+              id: "1"
+            }
+          },
+          posts: {
+            data: [{
+              type: "post",
+              id: "4969"
+            }, {
+              type: "post",
+              id: "1606"
+            }
+          ]}
+        },
+        type: "post-block"
+      }, {
+        attributes: {id: 2454},
+        id: "2454",
+        relationships: {
+          user: {
+            data: {
+              type: "user",
+              id: "1"
+            }
+          },
+          posts: {
+            data: [{
+              type: "post",
+              id: "4969"
+            }, {
+              type: "post",
+              id: "1606"
+            }
+          ]}
+        },
+        type: "post-block"
+      }, {
+        type: "user",
+        attributes: {
+          slug: "superyuri",
+          id: 1
+        },
+        id: "1"
+      }, {
+        type: "post",
+        id: "1606",
+        attributes: {
+          id: 1606,
+          text: 'hello1'
+        }
+      }, {
+        type: "post",
+        id: "4969",
+        attributes: {
+          id: 4969,
+          text: 'hello2'
+        }
+      }]
+    };
 
+  const output = {
+    question: {
+      "29": {
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29
+        },
+        relationships: {
+          "post-blocks": {
+            id: "4601,2454",
+            type: "post-block"
+          }
+        }
+      }
+    },
+    "post-block": {
+      "2454": {
+        attributes: {
+          id: 2454
+        },
+        relationships: {
+          user: {
+            type: "user",
+            id: "1"
+          },
+          posts: {
+            type: "post",
+            id: "4969,1606"
+          }
+        }
+      },
+      "4601": {
+        attributes: {
+          id: 4601
+        },
+        relationships: {
+          user: {
+            type: "user",
+            id: "1"
+          },
+          posts: {
+            type: "post",
+            id: "4969,1606"
+          }
+        }
+      }
+    },
+    "user": {
+      "1": {
+        attributes: {
+          id: 1,
+          slug: "superyuri"
+        }
+      }
+    },
+    "post": {
+      "1606": {
+        attributes: {
+          id: 1606,
+          text: 'hello1'
+        }
+      },
+      "4969": {
+        attributes: {
+          id: 4969,
+          text: 'hello2'
+        }
+      }
+    }
+  };
+
+  it('test data', () => {
+    const result = normalize(json);
+
+    const a = result['question']['29'].relationships;
+    const b = output['question']['29'].relationships;
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('test meta', () => {
+    const output = {
+      meta: {
+        '/post': {
+          data: [{
+            type: 'question',
+            id: '29',
+            relationships: {
+              'post-blocks': {
+                type: 'post-block',
+                id: '4601,2454'
+              }
+            }
+          }]
+        }
+      }
+    };
+
+    const result = normalize(json, '/post');
+
+    expect(isEqual(result.meta, output.meta)).to.be.true;
+  });
 });
