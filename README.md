@@ -120,7 +120,7 @@ This approach makes redux state updates a lot easier as during merge new string 
 
 # Options
 ## Endpoint and metadata
-While using redux it is supposed that cache is incrementally updated during the application lifecycle. However, you might face an issue if two different requests are working with the same data objects, and after normalization it is not clear how to distinguish, which data objects are related to which request. json-api-normalizer can handle such situations by saving the API response structure as a metadata, so you can easily get only data corresponding to the certain request.
+While using redux, it is supposed that cache is incrementally updated during the application lifecycle. However, you might face an issue if two different requests are working with the same data objects, and after normalization, it is not clear how to distinguish, which data objects are related to which request. json-api-normalizer can handle such situations by saving the API response structure as metadata, so you can easily get only data corresponding to the certain request.
 
 ```JavaScript
 console.log(normalize(json, { endpoint: '/post-block/2620' }));
@@ -150,7 +150,7 @@ console.log(normalize(json, { endpoint: '/post-block/2620' }));
 ```
 
 ## Endpoint and query options
-By default, request query options are ignored as it is supposed that data is incrementally updated. You can override this by setting `filterEndpoint` option `false`.
+By default request query options are ignored as it is supposed that data is incrementally updated. You can override this behavior by setting `filterEndpoint` option value to `false`.
 
 ```JavaScript
 const d1 = normalize(json, { endpoint: '/post-block/2620?page[cursor]=0' });
@@ -238,7 +238,7 @@ console.log(normalize(json, { endpoint: '/post-block/2620?page[cursor]=0'}));
 ```
 
 ## Camelize keys
-By default all object keys and type names are camelized, however you can disable this with `camelizeKeys` option.
+By default all object keys and type names are camelized, however, you can disable this with `camelizeKeys` option.
 
 ```JavaScript
 const json = {
