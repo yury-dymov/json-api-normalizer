@@ -58,6 +58,31 @@ describe('data is normalized', () => {
     expect(isEqual(result, {})).to.be.true;
   });
 
+  it('keys camelized', () => {
+    const input = {
+      data: [{
+        type: 'post',
+        id: "1",
+        attributes: {
+          id: 1,
+          'key-is-camelized': 2
+        }
+      }]
+    }
+
+    const camelizedOutput = {
+      post: {
+        "1": {
+          attributes: {
+            id: 1,
+            keyIsCamelized: 2
+          }
+        }
+      }
+    };
+
+    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
+  });
 });
 
 describe('included is normalized', () => {
@@ -295,25 +320,25 @@ describe('meta', () => {
   }
 
   it('meta, no links', () => {
-    const result = normalize(json, 'posts/me');
+    const result = normalize(json, { endpoint: 'posts/me' });
 
     expect(isEqual(result, output)).to.be.true;
   });
 
   it('meta, with links', () => {
-    const result = normalize(json2, 'posts/me');
+    const result = normalize(json2, { endpoint: 'posts/me' });
 
     expect(isEqual(result, output2)).to.be.true;
   });
 
   it('meta, filter works', () => {
-    const result = normalize(json2, 'posts/me?some=query');
+    const result = normalize(json2, { endpoint: 'posts/me?some=query' });
 
     expect(isEqual(result, output2)).to.be.true;
   });
 
   it('meta, disable filter option works', () => {
-    const result = normalize(json2, 'posts/me?some=query', { filterEndpoint: false });
+    const result = normalize(json2, { endpoint: 'posts/me?some=query', filterEndpoint: false });
 
     expect(isEqual(result, output2)).to.be.false;
   });
@@ -481,35 +506,130 @@ describe('complex', () => {
     }
   };
 
-  it('test data', () => {
-    const result = normalize(json);
+  const output2 = {
+    question: {
+      "29": {
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29
+        },
+        relationships: {
+          "postBlocks": {
+            id: "4601,2454",
+            type: "postBlock"
+          }
+        }
+      }
+    },
+    "postBlock": {
+      "2454": {
+        attributes: {
+          id: 2454
+        },
+        relationships: {
+          user: {
+            type: "user",
+            id: "1"
+          },
+          posts: {
+            type: "post",
+            id: "4969,1606"
+          }
+        }
+      },
+      "4601": {
+        attributes: {
+          id: 4601
+        },
+        relationships: {
+          user: {
+            type: "user",
+            id: "1"
+          },
+          posts: {
+            type: "post",
+            id: "4969,1606"
+          }
+        }
+      }
+    },
+    "user": {
+      "1": {
+        attributes: {
+          id: 1,
+          slug: "superyuri"
+        }
+      }
+    },
+    "post": {
+      "1606": {
+        attributes: {
+          id: 1606,
+          text: 'hello1'
+        }
+      },
+      "4969": {
+        attributes: {
+          id: 4969,
+          text: 'hello2'
+        }
+      }
+    }
+  };
 
-    const a = result['question']['29'].relationships;
-    const b = output['question']['29'].relationships;
+  it('test data camelizeKeys: false', () => {
+    const result = normalize(json, { camelizeKeys: false });
 
     expect(isEqual(result, output)).to.be.true;
   });
 
-  it('test meta', () => {
-    const output = {
-      meta: {
-        '/post': {
-          data: [{
-            type: 'question',
-            id: '29',
-            relationships: {
-              'post-blocks': {
-                type: 'post-block',
-                id: '4601,2454'
-              }
-            }
-          }]
+  it('test data camelizeKeys: true', () => {
+    const result = normalize(json, { camelizeKeys: true });
+
+    expect(isEqual(result, output2)).to.be.true;
+  });
+
+  const outputMeta = {
+    '/post': {
+      data: [{
+        type: 'question',
+        id: '29',
+        relationships: {
+          'post-blocks': {
+            type: 'post-block',
+            id: '4601,2454'
+          }
         }
-      }
-    };
+      }]
+    }
+  };
 
-    const result = normalize(json, '/post');
+  const outputMeta2 = {
+    '/post': {
+      data: [{
+        type: 'question',
+        id: '29',
+        relationships: {
+          'postBlocks': {
+            type: 'postBlock',
+            id: '4601,2454'
+          }
+        }
+      }]
+    }
+  };
 
-    expect(isEqual(result.meta, output.meta)).to.be.true;
+  it('test meta, camelizeKeys: false', () => {
+    const result = normalize(json, { endpoint: '/post', camelizeKeys: false });
+
+    expect(isEqual(result.meta, outputMeta)).to.be.true;
+  });
+
+  it('test meta, camelizeKeys: true', () => {
+    const result = normalize(json, { endpoint: '/post', camelizeKeys: true });
+
+    expect(isEqual(result.meta, outputMeta2)).to.be.true;
   });
 });

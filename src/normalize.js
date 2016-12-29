@@ -1,3 +1,4 @@
+import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
 import join from 'lodash/join';
 import keys from 'lodash/keys';
@@ -11,13 +12,24 @@ function wrap(json) {
   return [json];
 }
 
-function extract(json) {
+function extract(json, { camelizeKeys }) {
   const ret = {};
 
   wrap(json).forEach((elem) => {
-    ret[elem.type] = ret[elem.type] || {};
-    ret[elem.type][elem.id] = ret[elem.type][elem.id] || {};
-    ret[elem.type][elem.id].attributes = elem.attributes;
+    const type = camelizeKeys ? camelCase(elem.type) : elem.type;
+
+    ret[type] = ret[type] || {};
+    ret[type][elem.id] = ret[type][elem.id] || {};
+
+    if (camelizeKeys) {
+      ret[type][elem.id].attributes = {};
+
+      keys(elem.attributes).forEach((key) => {
+        ret[type][elem.id].attributes[camelCase(key)] = elem.attributes[key];
+      });
+    } else {
+      ret[type][elem.id].attributes = elem.attributes;
+    }
 
     if (elem.relationships) {
       wrap(elem.relationships).forEach((relationship) => {
@@ -25,16 +37,17 @@ function extract(json) {
 
         wrap(relationship).forEach((object) => {
           keys(object).forEach((key) => {
-            const ids = wrap(object[key].data).map(elem => elem.id);
+            const ids = wrap(object[key].data).map(el => el.id);
+            const relType = wrap(object[key].data)[0].type;
 
-            mp[key] = {
-              id: ids.length == 1 ? ids[0].toString() : join(ids, ','),
-              type: wrap(object[key].data)[0].type
+            mp[camelizeKeys ? camelCase(key) : key] = {
+              id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
+              type: camelizeKeys ? camelCase(relType) : relType,
             };
           });
         });
 
-        ret[elem.type][elem.id].relationships = mp;
+        ret[type][elem.id].relationships = mp;
       });
     }
   });
@@ -46,7 +59,7 @@ function doFilterEndpoint(endpoint) {
   return endpoint.replace(/\?.*$/, '');
 }
 
-function extractMetaData(json, endpoint) {
+function extractMetaData(json, endpoint, { camelizeKeys }) {
   const ret = {};
 
   ret.meta = {};
@@ -57,21 +70,25 @@ function extractMetaData(json, endpoint) {
     const meta = [];
 
     wrap(json.data).forEach((object) => {
-      const ret = { id: object.id, type: object.type };
+      const pObject = { id: object.id, type: camelizeKeys ? camelCase(object.type) : object.type };
 
       if (object.relationships) {
         keys(object.relationships).forEach((key) => {
-          ret.relationships = ret.relationships || {};
+          pObject.relationships = pObject.relationships || {};
 
           if (wrap(object.relationships[key].data).length > 0) {
             const ids = wrap(object.relationships[key].data).map(elem => elem.id);
+            const type = wrap(object.relationships[key].data)[0].type;
 
-            ret.relationships[key] = { type: wrap(object.relationships[key].data)[0].type, id: join(ids, ',') };
+            pObject.relationships[camelizeKeys ? camelCase(key) : key] = {
+              type: camelizeKeys ? camelCase(type) : type,
+              id: join(ids, ','),
+            };
           }
         });
       }
 
-      meta.push(ret);
+      meta.push(pObject);
     });
 
     ret.meta[endpoint].data = meta;
@@ -84,24 +101,31 @@ function extractMetaData(json, endpoint) {
   return ret;
 }
 
-export default function normalize(json, endpoint = null, opts = {}) {
+export default function normalize(json, opts = {}) {
   const ret = {};
-  let { filterEndpoint } = opts;
+  const { endpoint } = opts;
+  let { filterEndpoint, camelizeKeys } = opts;
 
   if (typeof filterEndpoint === 'undefined') {
     filterEndpoint = true;
   }
 
+  if (typeof camelizeKeys === 'undefined') {
+    camelizeKeys = true;
+  }
+
   if (json.data) {
-    merge(ret, extract(json.data));
+    merge(ret, extract(json.data, { camelizeKeys }));
   }
 
   if (json.included) {
-    merge(ret, extract(json.included));
+    merge(ret, extract(json.included, { camelizeKeys }));
   }
 
   if (endpoint) {
-    merge(ret, extractMetaData(json, filterEndpoint ? doFilterEndpoint(endpoint) : endpoint));
+    const endpointKey = filterEndpoint ? doFilterEndpoint(endpoint) : endpoint;
+
+    merge(ret, extractMetaData(json, endpointKey, { camelizeKeys }));
   }
 
   return ret;
