@@ -116,7 +116,7 @@ console.log(normalize(json));
 */
 ```
 
-This approach makes redux state updates a lot easier as during merge new string with IDs will replace old one. Otherwise, it would require some extra efforts to delete outdated relationships.
+This approach makes redux state updates a lot easier as during merge new string with IDs will replace the old one. Otherwise, it would require some extra efforts to delete outdated relationships from the store.
 
 # Options
 ## Endpoint and metadata
