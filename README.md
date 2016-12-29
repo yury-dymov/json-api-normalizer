@@ -238,7 +238,7 @@ console.log(normalize(json, { endpoint: '/post-block/2620?page[cursor]=0'}));
 ```
 
 ## Camelize keys
-By default all object keys and type names are camelized, however you can disable this by `camelizeKeys` option.
+By default all object keys and type names are camelized, however you can disable this with `camelizeKeys` option.
 
 ```JavaScript
 const json = {
