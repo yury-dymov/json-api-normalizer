@@ -64,8 +64,8 @@ console.log(normalize(json));
       },
       relationships: {
         question: {
-          type: 'question',
-          id: '295'
+          type: "question",
+          id: "295"
         }      
       }
     }
@@ -74,9 +74,53 @@ console.log(normalize(json));
 */
 ```
 
+# Data representation feature
+One-to-Many relationship is merged into one map like this
+
+```JavaScript
+const json = {
+  data: [{
+    type: "post-block",
+    id: "1",
+    attributes: { ... },
+    relationships: {
+      posts: {
+        data: [{
+          type: "post",
+          id: "1"
+        }, {
+          type: "post",
+          id: "2"          
+        }]
+      }
+    },
+    ...
+  }]
+}
+
+console.log(normalize(json));
+/* Output:
+{
+  postBlock: {
+    "1": {
+      ...,
+      relationships: {
+        posts: {
+          type: "post",
+          id: "1,2"           <----- this!
+        }
+      }
+    }
+  }
+}
+*/
+```
+
+This approach makes redux state updates a lot easier as during merge new string with IDs will replace old one. Otherwise, it would require some extra efforts to delete outdated relationships.
+
 # Options
 ## Endpoint and metadata
-While using redux it is supposed that cache is incrementally updated during the application lifecycle. However, you might face an issue if two different requests are working with the same data objects, and after normalization it is not clear how to distinguish, which data objects are related to which request. json-api-normalizer can handle such situations by saving the API respone structure as a metadata, so you can easily get only data corresponding to the certain request.
+While using redux it is supposed that cache is incrementally updated during the application lifecycle. However, you might face an issue if two different requests are working with the same data objects, and after normalization it is not clear how to distinguish, which data objects are related to which request. json-api-normalizer can handle such situations by saving the API response structure as a metadata, so you can easily get only data corresponding to the certain request.
 
 ```JavaScript
 console.log(normalize(json, { endpoint: '/post-block/2620' }));
@@ -89,14 +133,14 @@ console.log(normalize(json, { endpoint: '/post-block/2620' }));
     ...
   },
   meta: {
-    '/post-block/2620': {
+    "/post-block/2620": {
       data: [{
-        type: 'postBlock',
-        id: '2620',
+        type: "postBlock",
+        id: "2620",
         relationships: {
-          'post-blocks': {
-            type: 'question',
-            id: '295'
+          "post-blocks": {
+            type: "question",
+            id: "295"
           }      
       }]
     }
@@ -121,7 +165,7 @@ console.log(Object.assign({}, d1, d2));
     ...
   },
   meta: {
-    '/post-block/2620': {
+    "/post-block/2620": {
       ...
     }
   }
@@ -140,11 +184,11 @@ console.log(Object.assign({}, d1, d2));
     ...
   },
   meta: {
-    '/post-block/2620?page[cursor]=0': {
+    "/post-block/2620?page[cursor]=0": {
       ...
     }
     },
-    '/post-block/2620?page[cursor]=20': {
+    "/post-block/2620?page[cursor]=20": {
       ...
     }    
   }
@@ -179,7 +223,7 @@ console.log(normalize(json, { endpoint: '/post-block/2620?page[cursor]=0'}));
     ...
   },
   meta: {
-    '/post-block/2620': {
+    "/post-block/2620": {
       data: [{
         ...
       }],
