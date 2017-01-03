@@ -343,6 +343,68 @@ describe('meta', () => {
     expect(isEqual(result, output2)).to.be.false;
   });
 
+  it('meta, meta is provided by JSON API service', () => {
+    const json3 = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "question": {
+            "data": {
+              "type": "question",
+              "id": "295"
+            }
+          }
+        },
+        "id": "2620",
+        "attributes": {
+          "text": "hello",
+          "id": 2620
+        }
+      }],
+      meta: {
+        next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
+        first: "http://api.postie.loc/v1/posts/friends_feed/superyuri?page[cursor]=0"
+      }
+    };
+
+    const output3 = {
+      post: {
+        "2620": {
+          attributes: {
+            "text": "hello",
+            "id": 2620
+          },
+          relationships: {
+            question: {
+              id: "295",
+              type: "question"
+            }
+          }
+        }
+      },
+      meta: {
+        'posts/me': {
+          data: [{
+            type: 'post',
+            id: '2620',
+            relationships: {
+              question: {
+                type: 'question',
+                id: '295'
+              }
+            }
+          }],
+          meta: {
+            next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
+            first: "http://api.postie.loc/v1/posts/friends_feed/superyuri?page[cursor]=0"
+          }
+        }
+      }
+    };
+
+    expect(isEqual(normalize(json3, { endpoint: 'posts/me' }), output3)).to.be.true;    
+  });
+
   it('empty collection', () => {
     const emptyJson = {
       "data": [{

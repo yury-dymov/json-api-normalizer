@@ -100,6 +100,10 @@ function extractMetaData(json, endpoint, { camelizeKeys }) {
     if (json.links) {
       ret.meta[endpoint].links = json.links;
     }
+
+    if (json.meta) {
+      ret.meta[endpoint].meta = json.meta;
+    }
   }
 
   return ret;
