@@ -367,7 +367,9 @@ describe('meta', () => {
             "id": 1,
             "text": "hello"
           },
-          "relationships": {}
+          "relationships": {
+            "comments": {}
+          }
         }
       }
     }

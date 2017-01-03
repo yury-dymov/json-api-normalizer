@@ -45,6 +45,8 @@ function extract(json, { camelizeKeys }) {
                 id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
                 type: camelizeKeys ? camelCase(relType) : relType,
               };
+            } else {
+              mp[camelizeKeys ? camelCase(key) : key] = {};
             }
           });
         });
