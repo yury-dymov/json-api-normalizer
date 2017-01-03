@@ -37,13 +37,15 @@ function extract(json, { camelizeKeys }) {
 
         wrap(relationship).forEach((object) => {
           keys(object).forEach((key) => {
-            const ids = wrap(object[key].data).map(el => el.id);
-            const relType = wrap(object[key].data)[0].type;
+            if (wrap(object[key].data).length > 0) {
+              const ids = wrap(object[key].data).map(el => el.id);
+              const relType = wrap(object[key].data)[0].type;
 
-            mp[camelizeKeys ? camelCase(key) : key] = {
-              id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
-              type: camelizeKeys ? camelCase(relType) : relType,
-            };
+              mp[camelizeKeys ? camelCase(key) : key] = {
+                id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
+                type: camelizeKeys ? camelCase(relType) : relType,
+              };
+            }
           });
         });
 

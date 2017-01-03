@@ -342,6 +342,40 @@ describe('meta', () => {
 
     expect(isEqual(result, output2)).to.be.false;
   });
+
+  it('empty collection', () => {
+    const emptyJson = {
+      "data": [{
+        "type": "post",
+        "id": "1",
+        "attributes": {
+          "id": 1,
+          "text": "hello"
+        },
+        "relationships": {
+          "comments": {
+            "data": []
+          }
+        }
+      }]
+    };
+
+    const output = {
+      post: {
+        "1": {
+          "attributes": {
+            "id": 1,
+            "text": "hello"
+          },
+          "relationships": {}
+        }
+      }
+    }
+
+    const result = normalize(emptyJson);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
 });
 
 describe('complex', () => {
