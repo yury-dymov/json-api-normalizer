@@ -15,6 +15,8 @@ Demo - [https://yury-dymov.github.io/json-api-react-redux-example/](https://yury
 
 Demo sources - [https://github.com/yury-dymov/json-api-react-redux-example](https://github.com/yury-dymov/json-api-react-redux-example)
 
+Works great together with [redux-object](https://github.com/yury-dymov/redux-object), which helps to fetch and denormalize data from the store.
+
 # Example
 ```JavaScript
 import normalize from 'json-api-normalizer';
