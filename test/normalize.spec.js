@@ -731,3 +731,53 @@ describe('complex', () => {
     expect(isEqual(result.meta, outputMeta2)).to.be.true;
   });
 });
+
+describe('lazy loading', () => {
+  const json = {
+    data: [{
+      attributes: {
+        yday: 228,
+        text: "Какие качества Вы больше всего цените в женщинах?",
+        slug: "tbd",
+        id: 29
+      },
+      id: "29",
+      relationships: {
+        "movie": {
+          "links": {
+            "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+            "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
+          }
+        },        
+      },
+      type: "question"
+    }]
+  };
+
+  const output = {
+    question: {
+      "29": {
+        attributes: {
+          yday: 228,
+          text: "Какие качества Вы больше всего цените в женщинах?",
+          slug: "tbd",
+          id: 29        
+        },
+        relationships: {
+          movie: {
+            links: {
+              "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
+              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"            
+            }
+          }
+        }
+      }
+    }
+  };
+
+  it('basic test', () => {
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;    
+  });
+});
