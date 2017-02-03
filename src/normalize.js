@@ -37,6 +37,8 @@ function extract(json, { camelizeKeys }) {
 
         wrap(relationship).forEach((object) => {
           keys(object).forEach((key) => {
+            mp[camelizeKeys ? camelCase(key) : key] = {};
+
             if (typeof object[key].data !== 'undefined') {
               if (wrap(object[key].data).length > 0) {
                 const ids = wrap(object[key].data).map(el => el.id);
@@ -46,11 +48,11 @@ function extract(json, { camelizeKeys }) {
                   id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
                   type: camelizeKeys ? camelCase(relType) : relType,
                 };
-              } else {
-                mp[camelizeKeys ? camelCase(key) : key] = {};
               }
-            } else {
-              mp[camelizeKeys ? camelCase(key) : key] = { links: object[key].links };
+            }
+
+            if (object[key].links) {
+              mp[camelizeKeys ? camelCase(key) : key].links = object[key].links;
             }
           });
         });
