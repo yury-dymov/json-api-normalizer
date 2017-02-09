@@ -69,12 +69,25 @@ function doFilterEndpoint(endpoint) {
   return endpoint.replace(/\?.*$/, '');
 }
 
-function extractMetaData(json, endpoint, { camelizeKeys }) {
+function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
   const ret = {};
 
   ret.meta = {};
-  ret.meta[endpoint] = {};
-  ret.meta[endpoint].data = {};
+
+  let metaObject;
+
+  if (!filterEndpoint) {
+    const filteredEndpoint = doFilterEndpoint(endpoint);
+
+    ret.meta[filteredEndpoint] = {};
+    ret.meta[filteredEndpoint][endpoint.slice(filteredEndpoint.length)] = {};
+    metaObject = ret.meta[filteredEndpoint][endpoint.slice(filteredEndpoint.length)];
+  } else {
+    ret.meta[endpoint] = {};
+    metaObject = ret.meta[endpoint];
+  }
+
+  metaObject.data = {};
 
   if (json.data) {
     const meta = [];
@@ -101,14 +114,14 @@ function extractMetaData(json, endpoint, { camelizeKeys }) {
       meta.push(pObject);
     });
 
-    ret.meta[endpoint].data = meta;
+    metaObject.data = meta;
 
     if (json.links) {
-      ret.meta[endpoint].links = json.links;
+      ret.meta[doFilterEndpoint(endpoint)].links = json.links;
     }
 
     if (json.meta) {
-      ret.meta[endpoint].meta = json.meta;
+      metaObject.meta = json.meta;
     }
   }
 
@@ -139,7 +152,7 @@ export default function normalize(json, opts = {}) {
   if (endpoint) {
     const endpointKey = filterEndpoint ? doFilterEndpoint(endpoint) : endpoint;
 
-    merge(ret, extractMetaData(json, endpointKey, { camelizeKeys }));
+    merge(ret, extractMetaData(json, endpointKey, { camelizeKeys, filterEndpoint }));
   }
 
   return ret;

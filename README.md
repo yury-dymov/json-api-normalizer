@@ -187,13 +187,14 @@ console.log(Object.assign({}, d1, d2));
     ...
   },
   meta: {
-    "/post-block/2620?page[cursor]=0": {
-      ...
+    "/post-block/2620: {
+      "?page[cursor]=0": {
+        ...
+      },
+      "?page[cursor]=20": {
+        ...
+      }
     }
-    },
-    "/post-block/2620?page[cursor]=20": {
-      ...
-    }    
   }
 }
 */

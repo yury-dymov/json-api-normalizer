@@ -319,6 +319,43 @@ describe('meta', () => {
     }
   }
 
+  const output3 = {
+    post: {
+      "2620": {
+        attributes: {
+          "text": "hello",
+          "id": 2620
+        },
+        relationships: {
+          question: {
+            id: "295",
+            type: "question"
+          }
+        }
+      }
+    },
+    meta: {
+      'posts/me': {
+        '?some=query': {
+          data: [{
+            type: 'post',
+            id: '2620',
+            relationships: {
+              question: {
+                type: 'question',
+                id: '295'
+              }
+            }
+          }],
+        },
+        links: {
+          next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
+          first: "http://api.postie.loc/v1/posts/friends_feed/superyuri?page[cursor]=0"
+        }
+      }
+    }
+  };
+
   it('meta, no links', () => {
     const result = normalize(json, { endpoint: 'posts/me' });
 
@@ -340,7 +377,7 @@ describe('meta', () => {
   it('meta, disable filter option works', () => {
     const result = normalize(json2, { endpoint: 'posts/me?some=query', filterEndpoint: false });
 
-    expect(isEqual(result, output2)).to.be.false;
+    expect(isEqual(result, output3)).to.be.true;
   });
 
   it('meta, meta is provided by JSON API service', () => {
