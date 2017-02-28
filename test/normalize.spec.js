@@ -477,6 +477,42 @@ describe('meta', () => {
 
     expect(isEqual(result, output)).to.be.true;
   });
+
+  it('data is null', () => {
+    const emptyJson = {
+      "data": [{
+        "type": "post",
+        "id": "1",
+        "attributes": {
+          "id": 1,
+          "text": "hello"
+        },
+        "relationships": {
+          "comments": {
+            "data": null
+          }
+        }
+      }]
+    };
+
+    const output = {
+      post: {
+        "1": {
+          "attributes": {
+            "id": 1,
+            "text": "hello"
+          },
+          "relationships": {
+            "comments": {}
+          }
+        }
+      }
+    };
+
+    const result = normalize(emptyJson);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
 });
 
 describe('complex', () => {

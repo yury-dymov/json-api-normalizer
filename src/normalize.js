@@ -1,5 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
+import isNull from 'lodash/isNull';
 import join from 'lodash/join';
 import keys from 'lodash/keys';
 import merge from 'lodash/merge';
@@ -39,7 +40,7 @@ function extract(json, { camelizeKeys }) {
           keys(object).forEach((key) => {
             mp[camelizeKeys ? camelCase(key) : key] = {};
 
-            if (typeof object[key].data !== 'undefined') {
+            if (typeof object[key].data !== 'undefined' && !isNull(object[key].data)) {
               if (wrap(object[key].data).length > 0) {
                 const ids = wrap(object[key].data).map(el => el.id);
                 const relType = wrap(object[key].data)[0].type;
