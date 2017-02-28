@@ -1,3 +1,6 @@
+###v. 0.2.1 (28 Feb 2017)
+Fixed issue, when data is null [#4](https://github.com/yury-dymov/json-api-normalizer/issues/4)
+
 ###v. 0.2.0 (09 Feb 2017)
 Format changed for `filterEndpoint` option equals `false` for metadata.
 
