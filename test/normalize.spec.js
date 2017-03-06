@@ -513,6 +513,51 @@ describe('meta', () => {
 
     expect(isEqual(result, output)).to.be.true;
   });
+
+  it('meta, data is null', () => {
+    const emptyJson = {
+      "data": [{
+        "type": "post",
+        "id": "1",
+        "attributes": {
+          "id": 1,
+          "text": "hello"
+        },
+        "relationships": {
+          "comments": {
+            "data": null
+          }
+        }
+      }]
+    };
+
+    const output = {
+      post: {
+        "1": {
+          "attributes": {
+            "id": 1,
+            "text": "hello"
+          },
+          "relationships": {
+            "comments": {}
+          }
+        }
+      },
+      meta: {
+        "posts/me": {
+          data: [{
+            id: "1",
+            type: "post",
+            relationships: {}
+          }]
+        }
+      }
+    };
+
+    const result = normalize(emptyJson, { endpoint: 'posts/me' });
+
+    expect(isEqual(result, output)).to.be.true;
+  });
 });
 
 describe('complex', () => {

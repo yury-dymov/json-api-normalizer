@@ -100,14 +100,16 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
         keys(object.relationships).forEach((key) => {
           pObject.relationships = pObject.relationships || {};
 
-          if (wrap(object.relationships[key].data).length > 0) {
-            const ids = wrap(object.relationships[key].data).map(elem => elem.id);
-            const type = wrap(object.relationships[key].data)[0].type;
+          if (typeof object.relationships[key].data !== 'undefined' && !isNull(object.relationships[key].data)) {
+            if (wrap(object.relationships[key].data).length > 0) {
+              const ids = wrap(object.relationships[key].data).map(elem => elem.id);
+              const type = wrap(object.relationships[key].data)[0].type;
 
-            pObject.relationships[camelizeKeys ? camelCase(key) : key] = {
-              type: camelizeKeys ? camelCase(type) : type,
-              id: join(ids, ','),
-            };
+              pObject.relationships[camelizeKeys ? camelCase(key) : key] = {
+                type: camelizeKeys ? camelCase(type) : type,
+                id: join(ids, ','),
+              };
+            }
           }
         });
       }
