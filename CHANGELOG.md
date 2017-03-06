@@ -1,4 +1,4 @@
-###v. 0.2.2 (06 Mar 2017)
+###v. 0.2.3 (06 Mar 2017)
 Fixed issue, when data is null for the mata [#5](https://github.com/yury-dymov/json-api-normalizer/pull/5)
 
 ###v. 0.2.1 (28 Feb 2017)
