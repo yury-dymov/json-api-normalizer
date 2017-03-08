@@ -347,6 +347,10 @@ describe('meta', () => {
               }
             }
           }],
+          links: {
+            next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
+            first: "http://api.postie.loc/v1/posts/friends_feed/superyuri?page[cursor]=0"
+          },
         },
         links: {
           next: "http://example.com/api/v1/posts/friends_feed/superyuri?page[cursor]=5037",
