@@ -1,5 +1,8 @@
+###v. 0.2.4 (08 Mar 2017)
+Store links for subqueries in meta [#7](https://github.com/yury-dymov/json-api-normalizer/issues/6)
+
 ###v. 0.2.3 (06 Mar 2017)
-Fixed issue, when data is null for the mata [#5](https://github.com/yury-dymov/json-api-normalizer/pull/5)
+Fixed issue, when data is null for the meta [#5](https://github.com/yury-dymov/json-api-normalizer/pull/5)
 
 ###v. 0.2.1 (28 Feb 2017)
 Fixed issue, when data is null [#4](https://github.com/yury-dymov/json-api-normalizer/issues/4)
