@@ -20,7 +20,9 @@ function extract(json, { camelizeKeys }) {
     const type = camelizeKeys ? camelCase(elem.type) : elem.type;
 
     ret[type] = ret[type] || {};
-    ret[type][elem.id] = ret[type][elem.id] || {};
+    ret[type][elem.id] = ret[type][elem.id] || {
+      id: elem.id
+    };
 
     if (camelizeKeys) {
       ret[type][elem.id].attributes = {};
