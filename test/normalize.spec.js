@@ -1,27 +1,24 @@
-import chai, { expect } from 'chai';
+import { expect } from 'chai';
 import normalize from '../dist/bundle';
 import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
 
 describe('data is normalized', () => {
   const json = {
     data: [
       {
         type: 'post',
-        id: "3",
+        id: 3,
         attributes: {
           text: 'hello',
           number: 3,
-          id: 3
         }
       },
       {
         type: 'post',
-        id: "4",
+        id: 4,
         attributes: {
           text: 'hello world',
           number: 4,
-          id: 4
         }
       }
     ]
@@ -30,15 +27,15 @@ describe('data is normalized', () => {
   const output = {
     post: {
       "3": {
+        id: 3,
         attributes: {
-          id: 3,
           text: 'hello',
           number: 3
         }
       },
       "4": {
+        id: 4,
         attributes: {
-          id: 4,
           text: 'hello world',
           number: 4
         }
@@ -62,9 +59,8 @@ describe('data is normalized', () => {
     const input = {
       data: [{
         type: 'post',
-        id: "1",
+        id: 1,
         attributes: {
-          id: 1,
           'key-is-camelized': 2
         }
       }]
@@ -73,8 +69,8 @@ describe('data is normalized', () => {
     const camelizedOutput = {
       post: {
         "1": {
+          id: 1,
           attributes: {
-            id: 1,
             keyIsCamelized: 2
           }
         }
@@ -90,20 +86,18 @@ describe('included is normalized', () => {
     included: [
       {
         type: 'post',
-        id: "3",
+        id: 3,
         attributes: {
           text: 'hello',
           number: 3,
-          id: 3
         }
       },
       {
         type: 'post',
-        id: "4",
+        id: 4,
         attributes: {
           text: 'hello world',
           number: 4,
-          id: 4
         }
       }
     ]
@@ -113,22 +107,20 @@ describe('included is normalized', () => {
     included: [
       {
         type: 'post',
-        id: "3",
+        id: 3,
         attributes: {
           text: 'hello',
           number: 3,
-          id: 3
         }
       }
     ],
     data: [
       {
         type: 'post',
-        id: "4",
+        id: 4,
         attributes: {
           text: 'hello world',
           number: 4,
-          id: 4
         }
       }
     ]
@@ -137,15 +129,15 @@ describe('included is normalized', () => {
   const output = {
     post: {
       "3": {
+        id: 3,
         attributes: {
-          id: 3,
           text: 'hello',
           number: 3
         }
       },
       "4": {
+        id: 4,
         attributes: {
-          id: 4,
           text: 'hello world',
           number: 4
         }
@@ -178,10 +170,9 @@ describe('relationships', () => {
           }
         }
       },
-      "id": "2620",
+      "id": 2620,
       "attributes": {
         "text": "hello",
-        "id": 2620
       }
     }]
   };
@@ -189,9 +180,9 @@ describe('relationships', () => {
   const output = {
     post: {
       "2620": {
+        id: 2620,
         attributes: {
-          "text": "hello",
-          "id": 2620
+          text: "hello",
         },
         relationships: {
           question: {
@@ -222,10 +213,9 @@ describe('meta', () => {
           }
         }
       },
-      "id": "2620",
+      "id": 2620,
       "attributes": {
         "text": "hello",
-        "id": 2620
       }
     }]
   };
@@ -233,9 +223,9 @@ describe('meta', () => {
   const output = {
     post: {
       "2620": {
+        id: 2620,
         attributes: {
           "text": "hello",
-          "id": 2620
         },
         relationships: {
           question: {
@@ -248,7 +238,7 @@ describe('meta', () => {
     meta: {
       'posts/me': {
         data: [{
-          id: '2620',
+          id: 2620,
           type: 'post',
           relationships: {
             question: {
@@ -272,10 +262,9 @@ describe('meta', () => {
           }
         }
       },
-      "id": "2620",
+      "id": 2620,
       "attributes": {
         "text": "hello",
-        "id": 2620
       }
     }],
     links: {
@@ -287,9 +276,9 @@ describe('meta', () => {
   const output2 = {
     post: {
       "2620": {
+        "id": 2620,
         attributes: {
           "text": "hello",
-          "id": 2620
         },
         relationships: {
           question: {
@@ -303,7 +292,7 @@ describe('meta', () => {
       'posts/me': {
         data: [{
           type: 'post',
-          id: '2620',
+          id: 2620,
           relationships: {
             question: {
               type: 'question',
@@ -317,14 +306,14 @@ describe('meta', () => {
         }
       }
     }
-  }
+  };
 
   const output3 = {
     post: {
       "2620": {
+        id: 2620,
         attributes: {
           "text": "hello",
-          "id": 2620
         },
         relationships: {
           question: {
@@ -339,7 +328,7 @@ describe('meta', () => {
         '?some=query': {
           data: [{
             type: 'post',
-            id: '2620',
+            id: 2620,
             relationships: {
               question: {
                 type: 'question',
@@ -396,10 +385,9 @@ describe('meta', () => {
             }
           }
         },
-        "id": "2620",
+        id: 2620,
         "attributes": {
           "text": "hello",
-          "id": 2620
         }
       }],
       meta: {
@@ -411,9 +399,9 @@ describe('meta', () => {
     const output3 = {
       post: {
         "2620": {
+          id: 2620,
           attributes: {
             "text": "hello",
-            "id": 2620
           },
           relationships: {
             question: {
@@ -427,7 +415,7 @@ describe('meta', () => {
         'posts/me': {
           data: [{
             type: 'post',
-            id: '2620',
+            id: 2620,
             relationships: {
               question: {
                 type: 'question',
@@ -450,9 +438,8 @@ describe('meta', () => {
     const emptyJson = {
       "data": [{
         "type": "post",
-        "id": "1",
+        "id": 1,
         "attributes": {
-          "id": 1,
           "text": "hello"
         },
         "relationships": {
@@ -466,8 +453,8 @@ describe('meta', () => {
     const output = {
       post: {
         "1": {
+          "id": 1,
           "attributes": {
-            "id": 1,
             "text": "hello"
           },
           "relationships": {
@@ -475,7 +462,7 @@ describe('meta', () => {
           }
         }
       }
-    }
+    };
 
     const result = normalize(emptyJson);
 
@@ -486,9 +473,8 @@ describe('meta', () => {
     const emptyJson = {
       "data": [{
         "type": "post",
-        "id": "1",
+        "id": 1,
         "attributes": {
-          "id": 1,
           "text": "hello"
         },
         "relationships": {
@@ -502,8 +488,8 @@ describe('meta', () => {
     const output = {
       post: {
         "1": {
+          "id": 1,
           "attributes": {
-            "id": 1,
             "text": "hello"
           },
           "relationships": {
@@ -522,9 +508,8 @@ describe('meta', () => {
     const emptyJson = {
       "data": [{
         "type": "post",
-        "id": "1",
+        "id": 1,
         "attributes": {
-          "id": 1,
           "text": "hello"
         },
         "relationships": {
@@ -538,8 +523,8 @@ describe('meta', () => {
     const output = {
       post: {
         "1": {
+          "id": 1,
           "attributes": {
-            "id": 1,
             "text": "hello"
           },
           "relationships": {
@@ -550,7 +535,7 @@ describe('meta', () => {
       meta: {
         "posts/me": {
           data: [{
-            id: "1",
+            id: 1,
             type: "post",
             relationships: {}
           }]
@@ -571,60 +556,59 @@ describe('complex', () => {
           yday: 228,
           text: "Какие качества Вы больше всего цените в женщинах?",
           slug: "tbd",
-          id: 29
         },
-        id: "29",
+        id: 29,
         relationships: {
           "post-blocks": {
             data: [{
               type: "post-block",
-              id: "4601"
+              id: 4601
             }, {
               type: "post-block",
-              id: "2454"
+              id: 2454
             }]
           }
         },
         type: "question"
       }],
       included: [{
-        attributes: {id: 4601},
-        id: "4601",
+        attributes: {},
+        id: 4601,
         relationships: {
           user: {
             data: {
               type: "user",
-              id: "1"
+              id: 1
             }
           },
           posts: {
             data: [{
               type: "post",
-              id: "4969"
+              id: 4969
             }, {
               type: "post",
-              id: "1606"
+              id: 1606
             }
           ]}
         },
         type: "post-block"
       }, {
-        attributes: {id: 2454},
-        id: "2454",
+        attributes: {},
+        id: 2454,
         relationships: {
           user: {
             data: {
               type: "user",
-              id: "1"
+              id: 1
             }
           },
           posts: {
             data: [{
               type: "post",
-              id: "4969"
+              id: 4969
             }, {
               type: "post",
-              id: "1606"
+              id: 1606
             }
           ]}
         },
@@ -633,21 +617,18 @@ describe('complex', () => {
         type: "user",
         attributes: {
           slug: "superyuri",
-          id: 1
         },
-        id: "1"
+        id: 1
       }, {
         type: "post",
-        id: "1606",
+        id: 1606,
         attributes: {
-          id: 1606,
           text: 'hello1'
         }
       }, {
         type: "post",
-        id: "4969",
+        id: 4969,
         attributes: {
-          id: 4969,
           text: 'hello2'
         }
       }]
@@ -656,11 +637,11 @@ describe('complex', () => {
   const output = {
     question: {
       "29": {
+        id: 29,
         attributes: {
           yday: 228,
           text: "Какие качества Вы больше всего цените в женщинах?",
           slug: "tbd",
-          id: 29
         },
         relationships: {
           "post-blocks": {
@@ -672,9 +653,8 @@ describe('complex', () => {
     },
     "post-block": {
       "2454": {
-        attributes: {
-          id: 2454
-        },
+        id: 2454,
+        attributes: {},
         relationships: {
           user: {
             type: "user",
@@ -687,9 +667,8 @@ describe('complex', () => {
         }
       },
       "4601": {
-        attributes: {
-          id: 4601
-        },
+        id: 4601,
+        attributes: {},
         relationships: {
           user: {
             type: "user",
@@ -704,22 +683,22 @@ describe('complex', () => {
     },
     "user": {
       "1": {
+        id: 1,
         attributes: {
-          id: 1,
           slug: "superyuri"
         }
       }
     },
     "post": {
       "1606": {
+        id: 1606,
         attributes: {
-          id: 1606,
           text: 'hello1'
         }
       },
       "4969": {
+        id: 4969,
         attributes: {
-          id: 4969,
           text: 'hello2'
         }
       }
@@ -729,11 +708,11 @@ describe('complex', () => {
   const output2 = {
     question: {
       "29": {
+        id: 29,
         attributes: {
           yday: 228,
           text: "Какие качества Вы больше всего цените в женщинах?",
           slug: "tbd",
-          id: 29
         },
         relationships: {
           "postBlocks": {
@@ -745,9 +724,8 @@ describe('complex', () => {
     },
     "postBlock": {
       "2454": {
-        attributes: {
-          id: 2454
-        },
+        id: 2454,
+        attributes: {},
         relationships: {
           user: {
             type: "user",
@@ -760,9 +738,8 @@ describe('complex', () => {
         }
       },
       "4601": {
-        attributes: {
-          id: 4601
-        },
+        id: 4601,
+        attributes: {},
         relationships: {
           user: {
             type: "user",
@@ -777,22 +754,22 @@ describe('complex', () => {
     },
     "user": {
       "1": {
+        id: 1,
         attributes: {
-          id: 1,
           slug: "superyuri"
         }
       }
     },
     "post": {
       "1606": {
+        id: 1606,
         attributes: {
-          id: 1606,
           text: 'hello1'
         }
       },
       "4969": {
+        id: 4969,
         attributes: {
-          id: 4969,
           text: 'hello2'
         }
       }
@@ -802,20 +779,20 @@ describe('complex', () => {
   it('test data camelizeKeys: false', () => {
     const result = normalize(json, { camelizeKeys: false });
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.be.eql(output);
   });
 
   it('test data camelizeKeys: true', () => {
     const result = normalize(json, { camelizeKeys: true });
 
-    expect(isEqual(result, output2)).to.be.true;
+      expect(result).to.be.eql(output2);
   });
 
   const outputMeta = {
     '/post': {
       data: [{
         type: 'question',
-        id: '29',
+        id: 29,
         relationships: {
           'post-blocks': {
             type: 'post-block',
@@ -830,7 +807,7 @@ describe('complex', () => {
     '/post': {
       data: [{
         type: 'question',
-        id: '29',
+        id: 29,
         relationships: {
           'postBlocks': {
             type: 'postBlock',
@@ -844,26 +821,25 @@ describe('complex', () => {
   it('test meta, camelizeKeys: false', () => {
     const result = normalize(json, { endpoint: '/post', camelizeKeys: false });
 
-    expect(isEqual(result.meta, outputMeta)).to.be.true;
+    expect(result.meta).to.be.eql(outputMeta);
   });
 
   it('test meta, camelizeKeys: true', () => {
     const result = normalize(json, { endpoint: '/post', camelizeKeys: true });
 
-    expect(isEqual(result.meta, outputMeta2)).to.be.true;
+    expect(result.meta).to.be.eql(outputMeta2);
   });
 });
 
 describe('lazy loading', () => {
   const json = {
     data: [{
+      id: 29,
       attributes: {
         yday: 228,
         text: "Какие качества Вы больше всего цените в женщинах?",
         slug: "tbd",
-        id: 29
       },
-      id: "29",
       relationships: {
         "movie": {
           "links": {
@@ -879,11 +855,11 @@ describe('lazy loading', () => {
   const output = {
     question: {
       "29": {
+        id: 29,
         attributes: {
           yday: 228,
           text: "Какие качества Вы больше всего цените в женщинах?",
           slug: "tbd",
-          id: 29        
         },
         relationships: {
           movie: {
