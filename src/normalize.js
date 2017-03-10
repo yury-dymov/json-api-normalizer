@@ -21,7 +21,7 @@ function extract(json, { camelizeKeys }) {
 
     ret[type] = ret[type] || {};
     ret[type][elem.id] = ret[type][elem.id] || {
-      id: elem.id
+      id: elem.id,
     };
 
     if (camelizeKeys) {
