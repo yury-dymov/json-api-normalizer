@@ -1,6 +1,6 @@
 {
   "name": "json-api-normalizer",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "JSON API response normalizer",
   "main": "dist/bundle.js",
   "scripts": {
