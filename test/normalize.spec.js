@@ -159,42 +159,277 @@ describe('included is normalized', () => {
 });
 
 describe('relationships', () => {
-  const json = {
-    data: [{
-      "type": "post",
-      "relationships": {
-        "question": {
-          "data": {
-            "type": "question",
-            "id": "295"
+  it('empty to-one', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "question": {
+            "data": null,
           }
-        }
-      },
-      "id": 2620,
-      "attributes": {
-        "text": "hello",
-      }
-    }]
-  };
-
-  const output = {
-    post: {
-      "2620": {
-        id: 2620,
-        attributes: {
-          text: "hello",
         },
-        relationships: {
-          question: {
-            id: "295",
-            type: "question"
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            question: {
+              data: null,
+            }
           }
         }
       }
     }
-  }
 
-  it('relationships => map: %{id => Object}', () => {
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('empty to-many', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "tags": {
+            "data": [],
+          }
+        },
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            tags: {
+              data: [],
+            }
+          }
+        }
+      }
+    }
+
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('non-empty to-one', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "question": {
+            "data": {
+              "id": 7,
+              "type": "question"
+            },
+          }
+        },
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            question: {
+              data: {
+                id: 7,
+                type: "question",
+              },
+            }
+          }
+        }
+      }
+    }
+
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('non-empty to-many', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "tags": {
+            "data": [{
+              "id": 4,
+              "type": "tag"
+            }],
+          }
+        },
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            tags: {
+              data: [{
+                id: 4,
+                type: "tag",
+              }],
+            }
+          }
+        }
+      }
+    }
+
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('keys camelized', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "rel1-to-camelize": {
+            "data": [{
+              "id": 4,
+              "type": "type1-to-camelize"
+            }],
+          },
+          "rel2-to-camelize": {
+            "data": [],
+          },
+          "rel3-to-camelize": {
+            "data": {
+              "id": 4,
+              "type": "type3-to-camelize"
+            },
+          },
+          "rel4-to-camelize": {
+            "data": null,
+          }
+        },
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            rel1ToCamelize: {
+              data: [{
+                id: 4,
+                type: "type1ToCamelize",
+              }],
+            },
+            rel2ToCamelize: {
+              data: [],
+            },
+            rel3ToCamelize: {
+              data: {
+                id: 4,
+                type: "type3ToCamelize",
+              },
+            },
+            rel4ToCamelize: {
+              data: null,
+            }
+          }
+        }
+      }
+    }
+
+    const result = normalize(json);
+
+    expect(isEqual(result, output)).to.be.true;
+  });
+
+  it('keep links', () => {
+    const json = {
+      data: [{
+        "type": "post",
+        "relationships": {
+          "tags": {
+            "data": [{
+              "id": 4,
+              "type": "tag"
+            }],
+            "links": {
+              "self": "http://example.com/api/v1/post/2620/tags",
+            }
+          }
+        },
+        "id": 2620,
+        "attributes": {
+          "text": "hello",
+        }
+      }]
+    };
+  
+    const output = {
+      post: {
+        "2620": {
+          id: 2620,
+          attributes: {
+            text: "hello",
+          },
+          relationships: {
+            tags: {
+              data: [{
+                id: 4,
+                type: "tag",
+              }],
+              links: {
+                self: "http://example.com/api/v1/post/2620/tags",
+              }
+            }
+          }
+        }
+      }
+    }
+
     const result = normalize(json);
 
     expect(isEqual(result, output)).to.be.true;
@@ -229,8 +464,10 @@ describe('meta', () => {
         },
         relationships: {
           question: {
-            id: "295",
-            type: "question"
+            data: {
+              id: "295",
+              type: "question"
+            }
           }
         }
       }
@@ -242,8 +479,10 @@ describe('meta', () => {
           type: 'post',
           relationships: {
             question: {
-              type: 'question',
-              id: '295'
+              data: {
+                type: 'question',
+                id: '295'
+              }
             }
           }
         }]
@@ -282,8 +521,10 @@ describe('meta', () => {
         },
         relationships: {
           question: {
-            id: "295",
-            type: "question"
+            data:{
+              id: "295",
+              type: "question"
+            }
           }
         }
       }
@@ -295,8 +536,10 @@ describe('meta', () => {
           id: 2620,
           relationships: {
             question: {
-              type: 'question',
-              id: '295'
+              data: {
+                type: 'question',
+                id: '295'
+              }
             }
           }
         }],
@@ -317,8 +560,10 @@ describe('meta', () => {
         },
         relationships: {
           question: {
-            id: "295",
-            type: "question"
+            data: {
+              id: "295",
+              type: "question"
+            }
           }
         }
       }
@@ -331,8 +576,10 @@ describe('meta', () => {
             id: 2620,
             relationships: {
               question: {
-                type: 'question',
-                id: '295'
+                data: {
+                  type: 'question',
+                  id: '295'
+                }
               }
             }
           }],
@@ -405,8 +652,10 @@ describe('meta', () => {
           },
           relationships: {
             question: {
-              id: "295",
-              type: "question"
+              data: {
+                id: "295",
+                type: "question"
+              }
             }
           }
         }
@@ -418,8 +667,10 @@ describe('meta', () => {
             id: 2620,
             relationships: {
               question: {
-                type: 'question',
-                id: '295'
+                data: {
+                  type: 'question',
+                  id: '295'
+                }
               }
             }
           }],
@@ -453,97 +704,20 @@ describe('meta', () => {
     const output = {
       post: {
         "1": {
-          "id": 1,
-          "attributes": {
-            "text": "hello"
+          id: 1,
+          attributes: {
+            text: "hello"
           },
-          "relationships": {
-            "comments": {}
+          relationships: {
+            comments: {
+              data: []
+            }
           }
         }
       }
     };
 
     const result = normalize(emptyJson);
-
-    expect(isEqual(result, output)).to.be.true;
-  });
-
-  it('data is null', () => {
-    const emptyJson = {
-      "data": [{
-        "type": "post",
-        "id": 1,
-        "attributes": {
-          "text": "hello"
-        },
-        "relationships": {
-          "comments": {
-            "data": null
-          }
-        }
-      }]
-    };
-
-    const output = {
-      post: {
-        "1": {
-          "id": 1,
-          "attributes": {
-            "text": "hello"
-          },
-          "relationships": {
-            "comments": {}
-          }
-        }
-      }
-    };
-
-    const result = normalize(emptyJson);
-
-    expect(isEqual(result, output)).to.be.true;
-  });
-
-  it('meta, data is null', () => {
-    const emptyJson = {
-      "data": [{
-        "type": "post",
-        "id": 1,
-        "attributes": {
-          "text": "hello"
-        },
-        "relationships": {
-          "comments": {
-            "data": null
-          }
-        }
-      }]
-    };
-
-    const output = {
-      post: {
-        "1": {
-          "id": 1,
-          "attributes": {
-            "text": "hello"
-          },
-          "relationships": {
-            "comments": {}
-          }
-        }
-      },
-      meta: {
-        "posts/me": {
-          data: [{
-            id: 1,
-            type: "post",
-            relationships: {}
-          }]
-        }
-      }
-    };
-
-    const result = normalize(emptyJson, { endpoint: 'posts/me' });
 
     expect(isEqual(result, output)).to.be.true;
   });
@@ -645,8 +819,13 @@ describe('complex', () => {
         },
         relationships: {
           "post-blocks": {
-            id: "4601,2454",
-            type: "post-block"
+            data: [{
+              id: 4601,
+              type: "post-block"
+            }, {
+              id: 2454,
+              type: "post-block"
+            }]
           }
         }
       }
@@ -657,12 +836,19 @@ describe('complex', () => {
         attributes: {},
         relationships: {
           user: {
-            type: "user",
-            id: "1"
+            data: {
+              type: "user",
+              id: 1
+            }
           },
           posts: {
-            type: "post",
-            id: "4969,1606"
+            data: [{
+              type: "post",
+              id: 4969,
+            }, {
+              type: "post",
+              id: 1606,
+            }]
           }
         }
       },
@@ -671,12 +857,19 @@ describe('complex', () => {
         attributes: {},
         relationships: {
           user: {
-            type: "user",
-            id: "1"
+            data: {
+              type: "user",
+              id: 1
+            }
           },
           posts: {
-            type: "post",
-            id: "4969,1606"
+            data: [{
+              type: "post",
+              id: 4969
+            },{
+              type: "post",
+              id: 1606,
+            }]
           }
         }
       }
@@ -716,8 +909,13 @@ describe('complex', () => {
         },
         relationships: {
           "postBlocks": {
-            id: "4601,2454",
-            type: "postBlock"
+            data: [{
+              id: 4601,
+              type: "postBlock"
+            }, {
+              id: 2454,
+              type: "postBlock"
+            }]
           }
         }
       }
@@ -728,12 +926,19 @@ describe('complex', () => {
         attributes: {},
         relationships: {
           user: {
-            type: "user",
-            id: "1"
+            data: {
+              type: "user",
+              id: 1
+            }
           },
           posts: {
-            type: "post",
-            id: "4969,1606"
+            data: [{
+              type: "post",
+              id: 4969
+            }, {
+              type: "post",
+              id: 1606
+            }]
           }
         }
       },
@@ -742,12 +947,19 @@ describe('complex', () => {
         attributes: {},
         relationships: {
           user: {
-            type: "user",
-            id: "1"
+            data: {
+              type: "user",
+              id: 1
+            }
           },
           posts: {
-            type: "post",
-            id: "4969,1606"
+            data: [{
+              type: "post",
+              id: 4969
+            },{
+              type: "post",
+              id: 1606
+            }]
           }
         }
       }
@@ -795,8 +1007,13 @@ describe('complex', () => {
         id: 29,
         relationships: {
           'post-blocks': {
-            type: 'post-block',
-            id: '4601,2454'
+            data: [{
+              type: 'post-block',
+              id: 4601
+            }, {
+              type: 'post-block',
+              id: 2454
+            }]
           }
         }
       }]
@@ -810,8 +1027,13 @@ describe('complex', () => {
         id: 29,
         relationships: {
           'postBlocks': {
-            type: 'postBlock',
-            id: '4601,2454'
+            data: [{
+              type: 'postBlock',
+              id: 4601
+            }, {
+              type: 'postBlock',
+              id: 2454
+            }]
           }
         }
       }]
@@ -875,7 +1097,6 @@ describe('lazy loading', () => {
 
   it('basic test', () => {
     const result = normalize(json);
-
     expect(isEqual(result, output)).to.be.true;    
   });
 });

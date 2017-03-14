@@ -1,7 +1,6 @@
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
-import join from 'lodash/join';
 import keys from 'lodash/keys';
 import merge from 'lodash/merge';
 
@@ -13,7 +12,37 @@ function wrap(json) {
   return [json];
 }
 
-function extract(json, { camelizeKeys }) {
+function extractRelationships(relationships, { camelizeKeys }) {
+  const ret = {};
+  keys(relationships).forEach((key) => {
+    const relationship = relationships[key];
+    const name = camelizeKeys ? camelCase(key) : key;
+    ret[name] = {};
+
+    if (typeof relationship.data !== 'undefined') {
+      if (isArray(relationship.data)) {
+        ret[name].data = relationship.data.map(e => ({
+          id: e.id,
+          type: camelizeKeys ? camelCase(e.type) : e.type,
+        }));
+      } else if (!isNull(relationship.data)) {
+        ret[name].data = {
+          id: relationship.data.id,
+          type: camelizeKeys ? camelCase(relationship.data.type) : relationship.data.type,
+        };
+      } else {
+        ret[name].data = relationship.data;
+      }
+    }
+
+    if (relationship.links) {
+      ret[name].links = relationship.links;
+    }
+  });
+  return ret;
+}
+
+function extractEntities(json, { camelizeKeys }) {
   const ret = {};
 
   wrap(json).forEach((elem) => {
@@ -35,33 +64,8 @@ function extract(json, { camelizeKeys }) {
     }
 
     if (elem.relationships) {
-      wrap(elem.relationships).forEach((relationship) => {
-        const mp = {};
-
-        wrap(relationship).forEach((object) => {
-          keys(object).forEach((key) => {
-            mp[camelizeKeys ? camelCase(key) : key] = {};
-
-            if (typeof object[key].data !== 'undefined' && !isNull(object[key].data)) {
-              if (wrap(object[key].data).length > 0) {
-                const ids = wrap(object[key].data).map(el => el.id);
-                const relType = wrap(object[key].data)[0].type;
-
-                mp[camelizeKeys ? camelCase(key) : key] = {
-                  id: ids.length === 1 ? ids[0].toString() : join(ids, ','),
-                  type: camelizeKeys ? camelCase(relType) : relType,
-                };
-              }
-            }
-
-            if (object[key].links) {
-              mp[camelizeKeys ? camelCase(key) : key].links = object[key].links;
-            }
-          });
-        });
-
-        ret[type][elem.id].relationships = mp;
-      });
+      ret[type][elem.id].relationships =
+        extractRelationships(elem.relationships, { camelizeKeys });
     }
   });
 
@@ -99,21 +103,8 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
       const pObject = { id: object.id, type: camelizeKeys ? camelCase(object.type) : object.type };
 
       if (object.relationships) {
-        keys(object.relationships).forEach((key) => {
-          pObject.relationships = pObject.relationships || {};
-
-          if (typeof object.relationships[key].data !== 'undefined' && !isNull(object.relationships[key].data)) {
-            if (wrap(object.relationships[key].data).length > 0) {
-              const ids = wrap(object.relationships[key].data).map(elem => elem.id);
-              const type = wrap(object.relationships[key].data)[0].type;
-
-              pObject.relationships[camelizeKeys ? camelCase(key) : key] = {
-                type: camelizeKeys ? camelCase(type) : type,
-                id: join(ids, ','),
-              };
-            }
-          }
-        });
+        pObject.relationships =
+          extractRelationships(object.relationships, { camelizeKeys });
       }
 
       meta.push(pObject);
@@ -148,11 +139,11 @@ export default function normalize(json, opts = {}) {
   }
 
   if (json.data) {
-    merge(ret, extract(json.data, { camelizeKeys }));
+    merge(ret, extractEntities(json.data, { camelizeKeys }));
   }
 
   if (json.included) {
-    merge(ret, extract(json.included, { camelizeKeys }));
+    merge(ret, extractEntities(json.included, { camelizeKeys }));
   }
 
   if (endpoint) {
