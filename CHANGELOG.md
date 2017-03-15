@@ -1,3 +1,6 @@
+###v. 0.4.0 (15 Mar 2017)
+Relationshop normalization implementation changed [discussion](https://github.com/yury-dymov/json-api-normalizer/issues/11)
+
 ###v. 0.3.0 (09 Mar 2017)
 IDs now preserved in entities. [discussion](https://github.com/yury-dymov/json-api-normalizer/issues/3)
 
