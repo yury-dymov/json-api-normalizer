@@ -77,50 +77,6 @@ console.log(normalize(json));
 */
 ```
 
-# Data Representation Feature
-One-to-Many relationship is merged into one map like this
-
-```JavaScript
-const json = {
-  data: [{
-    type: "post-block",
-    id: "1",
-    attributes: { ... },
-    relationships: {
-      posts: {
-        data: [{
-          type: "post",
-          id: "1"
-        }, {
-          type: "post",
-          id: "2"          
-        }]
-      }
-    },
-    ...
-  }]
-}
-
-console.log(normalize(json));
-/* Output:
-{
-  postBlock: {
-    "1": {
-      ...,
-      relationships: {
-        posts: {
-          type: "post",
-          id: "1,2"           <----- this!
-        }
-      }
-    }
-  }
-}
-*/
-```
-
-This approach makes redux state updates a lot easier as during merge new string with IDs will replace the old one. Otherwise, it would require some extra efforts to delete outdated relationships from the store.
-
 # Options
 ## Endpoint And Metadata
 While using redux, it is supposed that cache is incrementally updated during the application lifecycle. However, you might face an issue if two different requests are working with the same data objects, and after normalization, it is not clear how to distinguish, which data objects are related to which request. json-api-normalizer can handle such situations by saving the API response structure as metadata, so you can easily get only data corresponding to the certain request.
