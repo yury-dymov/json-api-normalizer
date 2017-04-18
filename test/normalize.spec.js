@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-import normalize from '../dist/bundle';
-import isEqual from 'lodash/isEqual';
+import normalize from '../src/normalize';
 
 describe('data is normalized', () => {
   const json = {
@@ -46,13 +45,13 @@ describe('data is normalized', () => {
   it('data attributes => map: %{id => Object}', () => {
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('data is empty shouldn\'t fail', () => {
     const result = normalize({});
 
-    expect(isEqual(result, {})).to.be.true;
+    expect(result).to.eql({});
   });
 
   it('keys camelized', () => {
@@ -77,7 +76,66 @@ describe('data is normalized', () => {
       }
     };
 
-    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
+    expect(normalize(input)).to.eql(camelizedOutput);
+  });
+
+  it('maintains the order', () => {
+    const json = {
+      data: [
+        {
+          type: 'post',
+          id: 4,
+          attributes: {
+            text: 'hello',
+            number: 4,
+          }
+        },
+        {
+          type: 'post',
+          id: 3,
+          attributes: {
+            text: 'hello world',
+            number: 3,
+          }
+        },
+        {
+          type: 'post',
+          id: 5,
+          attributes: {
+            text: 'hello world',
+            number: 5,
+          }
+        }
+      ]
+    };
+
+    const output = {
+      post: {
+        "4": {
+          id: 4,
+          attributes: {
+            text: 'hello',
+            number: 4
+          }
+        },
+        "3": {
+          id: 3,
+          attributes: {
+            text: 'hello world',
+            number: 3
+          }
+        },
+        "5": {
+          id: 5,
+          attributes: {
+            text: 'hello world',
+            number: 5
+          }
+        }
+      }
+    };
+
+    expect(normalize(json)).to.eql(output);
   });
 });
 
@@ -148,13 +206,13 @@ describe('included is normalized', () => {
   it('included => map: %{id => Object}', () => {
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('data & included => map: %{id => Object}', () => {
     const result = normalize(json2);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 });
 
@@ -174,7 +232,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -193,7 +251,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('empty to-many', () => {
@@ -211,7 +269,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -230,7 +288,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('non-empty to-one', () => {
@@ -251,7 +309,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -273,7 +331,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('non-empty to-many', () => {
@@ -294,7 +352,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -316,7 +374,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('keys camelized', () => {
@@ -349,7 +407,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -383,7 +441,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('keep links', () => {
@@ -407,7 +465,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -432,7 +490,7 @@ describe('relationships', () => {
 
     const result = normalize(json);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 });
 
@@ -521,7 +579,7 @@ describe('meta', () => {
         },
         relationships: {
           question: {
-            data:{
+            data: {
               id: "295",
               type: "question"
             }
@@ -599,25 +657,25 @@ describe('meta', () => {
   it('meta, no links', () => {
     const result = normalize(json, { endpoint: 'posts/me' });
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 
   it('meta, with links', () => {
     const result = normalize(json2, { endpoint: 'posts/me' });
 
-    expect(isEqual(result, output2)).to.be.true;
+    expect(result).to.eql(output2);
   });
 
   it('meta, filter works', () => {
     const result = normalize(json2, { endpoint: 'posts/me?some=query' });
 
-    expect(isEqual(result, output2)).to.be.true;
+    expect(result).to.eql(output2);
   });
 
   it('meta, disable filter option works', () => {
     const result = normalize(json2, { endpoint: 'posts/me?some=query', filterEndpoint: false });
 
-    expect(isEqual(result, output3)).to.be.true;
+    expect(result).to.eql(output3);
   });
 
   it('meta, meta is provided by JSON API service', () => {
@@ -682,7 +740,7 @@ describe('meta', () => {
       }
     };
 
-    expect(isEqual(normalize(json3, { endpoint: 'posts/me' }), output3)).to.be.true;    
+    expect(normalize(json3, { endpoint: 'posts/me' })).to.eql(output3);
   });
 
   it('empty collection', () => {
@@ -719,94 +777,96 @@ describe('meta', () => {
 
     const result = normalize(emptyJson);
 
-    expect(isEqual(result, output)).to.be.true;
+    expect(result).to.eql(output);
   });
 });
 
 describe('complex', () => {
-    const json = {
-      data: [{
-        attributes: {
-          yday: 228,
-          text: "Какие качества Вы больше всего цените в женщинах?",
-          slug: "tbd",
-        },
-        id: 29,
-        relationships: {
-          "post-blocks": {
-            data: [{
-              type: "post-block",
-              id: 4601
-            }, {
-              type: "post-block",
-              id: 2454
-            }]
+  const json = {
+    data: [{
+      attributes: {
+        yday: 228,
+        text: "Какие качества Вы больше всего цените в женщинах?",
+        slug: "tbd",
+      },
+      id: 29,
+      relationships: {
+        "post-blocks": {
+          data: [{
+            type: "post-block",
+            id: 4601
+          }, {
+            type: "post-block",
+            id: 2454
+          }]
+        }
+      },
+      type: "question"
+    }],
+    included: [{
+      attributes: {},
+      id: 4601,
+      relationships: {
+        user: {
+          data: {
+            type: "user",
+            id: 1
           }
         },
-        type: "question"
-      }],
-      included: [{
-        attributes: {},
-        id: 4601,
-        relationships: {
-          user: {
-            data: {
-              type: "user",
-              id: 1
-            }
-          },
-          posts: {
-            data: [{
-              type: "post",
-              id: 4969
-            }, {
-              type: "post",
-              id: 1606
-            }
-          ]}
-        },
-        type: "post-block"
-      }, {
-        attributes: {},
-        id: 2454,
-        relationships: {
-          user: {
-            data: {
-              type: "user",
-              id: 1
-            }
-          },
-          posts: {
-            data: [{
-              type: "post",
-              id: 4969
-            }, {
-              type: "post",
-              id: 1606
-            }
-          ]}
-        },
-        type: "post-block"
-      }, {
-        type: "user",
-        attributes: {
-          slug: "superyuri",
-        },
-        id: 1
-      }, {
-        type: "post",
-        id: 1606,
-        attributes: {
-          text: 'hello1'
+        posts: {
+          data: [{
+            type: "post",
+            id: 4969
+          }, {
+            type: "post",
+            id: 1606
+          }
+          ]
         }
-      }, {
-        type: "post",
-        id: 4969,
-        attributes: {
-          text: 'hello2'
+      },
+      type: "post-block"
+    }, {
+      attributes: {},
+      id: 2454,
+      relationships: {
+        user: {
+          data: {
+            type: "user",
+            id: 1
+          }
+        },
+        posts: {
+          data: [{
+            type: "post",
+            id: 4969
+          }, {
+            type: "post",
+            id: 1606
+          }
+          ]
         }
-      }]
-    };
+      },
+      type: "post-block"
+    }, {
+      type: "user",
+      attributes: {
+        slug: "superyuri",
+      },
+      id: 1
+    }, {
+      type: "post",
+      id: 1606,
+      attributes: {
+        text: 'hello1'
+      }
+    }, {
+      type: "post",
+      id: 4969,
+      attributes: {
+        text: 'hello2'
+      }
+    }]
+  };
 
   const output = {
     question: {
@@ -866,7 +926,7 @@ describe('complex', () => {
             data: [{
               type: "post",
               id: 4969
-            },{
+            }, {
               type: "post",
               id: 1606,
             }]
@@ -956,7 +1016,7 @@ describe('complex', () => {
             data: [{
               type: "post",
               id: 4969
-            },{
+            }, {
               type: "post",
               id: 1606
             }]
@@ -997,7 +1057,7 @@ describe('complex', () => {
   it('test data camelizeKeys: true', () => {
     const result = normalize(json, { camelizeKeys: true });
 
-      expect(result).to.be.eql(output2);
+    expect(result).to.be.eql(output2);
   });
 
   const outputMeta = {
@@ -1068,7 +1128,7 @@ describe('lazy loading', () => {
             "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
             "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
           }
-        },        
+        },
       },
       type: "question"
     }]
@@ -1087,7 +1147,7 @@ describe('lazy loading', () => {
           movie: {
             links: {
               "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
-              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"            
+              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
             }
           }
         }
@@ -1097,6 +1157,7 @@ describe('lazy loading', () => {
 
   it('basic test', () => {
     const result = normalize(json);
-    expect(isEqual(result, output)).to.be.true;    
+
+    expect(result).to.eql(output);
   });
 });

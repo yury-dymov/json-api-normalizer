@@ -13,7 +13,8 @@ function wrap(json) {
 }
 
 function extractRelationships(relationships, { camelizeKeys }) {
-  const ret = {};
+  const ret = new Map();
+  
   keys(relationships).forEach((key) => {
     const relationship = relationships[key];
     const name = camelizeKeys ? camelCase(key) : key;
@@ -43,7 +44,7 @@ function extractRelationships(relationships, { camelizeKeys }) {
 }
 
 function extractEntities(json, { camelizeKeys }) {
-  const ret = {};
+  const ret = new Map();
 
   wrap(json).forEach((elem) => {
     const type = camelizeKeys ? camelCase(elem.type) : elem.type;
@@ -77,7 +78,7 @@ function doFilterEndpoint(endpoint) {
 }
 
 function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
-  const ret = {};
+  const ret = new Map();
 
   ret.meta = {};
 
@@ -126,7 +127,7 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
 }
 
 export default function normalize(json, opts = {}) {
-  const ret = {};
+  const ret = new Map();
   const { endpoint } = opts;
   let { filterEndpoint, camelizeKeys } = opts;
 
