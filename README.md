@@ -6,7 +6,6 @@ Utility to normalize JSON API data for redux applications
 [![Build Status](https://img.shields.io/travis/yury-dymov/json-api-normalizer/master.svg?style=flat)](https://travis-ci.org/yury-dymov/json-api-normalizer)
 [![Coverage Status](https://coveralls.io/repos/github/yury-dymov/json-api-normalizer/badge.svg?branch=master)](https://coveralls.io/github/yury-dymov/json-api-normalizer?branch=master)
 
-
 # Description
 json-api-normalizer helps awesome [JSON API](http://jsonapi.org/) and [redux](http://redux.js.org/) work together.
 Unlike [normalizr](https://github.com/paularmstrong/normalizr) json-api-normalizer supports JSON API specification, which means that you don't have to care about schemes. It also converts collections into maps, which is a lot more suitable for redux.
@@ -16,6 +15,8 @@ Demo - [https://yury-dymov.github.io/json-api-react-redux-example/](https://yury
 Demo sources - [https://github.com/yury-dymov/json-api-react-redux-example](https://github.com/yury-dymov/json-api-react-redux-example)
 
 Works great together with [redux-object](https://github.com/yury-dymov/redux-object), which helps to fetch and denormalize data from the store.
+
+json-api-normalizer was recently featured in SmashingMagazine: https://www.smashingmagazine.com/2017/05/json-api-normalizer-redux/
 
 # Example
 ```JavaScript
