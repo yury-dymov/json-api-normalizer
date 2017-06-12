@@ -1,3 +1,6 @@
+###v. 0.4.1 (11 Jun 2017)
+Including self links in normalization (https://github.com/yury-dymov/json-api-normalizer/pull/16)
+
 ###v. 0.4.0 (15 Mar 2017)
 Relationshop normalization implementation changed [discussion](https://github.com/yury-dymov/json-api-normalizer/issues/11)
 
