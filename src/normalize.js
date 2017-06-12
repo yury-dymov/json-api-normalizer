@@ -63,6 +63,14 @@ function extractEntities(json, { camelizeKeys }) {
       ret[type][elem.id].attributes = elem.attributes;
     }
 
+    if (elem.links) {
+      ret[type][elem.id].links = {};
+
+      keys(elem.links).forEach((key) => {
+        ret[type][elem.id].links[key] = elem.links[key];
+      })
+    }
+
     if (elem.relationships) {
       ret[type][elem.id].relationships =
         extractRelationships(elem.relationships, { camelizeKeys });

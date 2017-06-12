@@ -11,6 +11,9 @@ describe('data is normalized', () => {
         attributes: {
           text: 'hello',
           number: 3,
+        },
+        links: {
+          self: 'http://www.example.com/post/3'
         }
       },
       {
@@ -19,6 +22,9 @@ describe('data is normalized', () => {
         attributes: {
           text: 'hello world',
           number: 4,
+        },
+        links: {
+          self: 'http://www.example.com/post/4'
         }
       }
     ]
@@ -31,6 +37,9 @@ describe('data is normalized', () => {
         attributes: {
           text: 'hello',
           number: 3
+        },
+        links: {
+          self: 'http://www.example.com/post/3'
         }
       },
       "4": {
@@ -38,6 +47,9 @@ describe('data is normalized', () => {
         attributes: {
           text: 'hello world',
           number: 4
+        },
+        links: {
+          self: 'http://www.example.com/post/4'
         }
       }
     }
@@ -174,7 +186,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -211,7 +223,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -251,7 +263,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -294,7 +306,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -349,7 +361,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -407,7 +419,7 @@ describe('relationships', () => {
         }
       }]
     };
-  
+
     const output = {
       post: {
         "2620": {
@@ -682,7 +694,7 @@ describe('meta', () => {
       }
     };
 
-    expect(isEqual(normalize(json3, { endpoint: 'posts/me' }), output3)).to.be.true;    
+    expect(isEqual(normalize(json3, { endpoint: 'posts/me' }), output3)).to.be.true;
   });
 
   it('empty collection', () => {
@@ -1068,7 +1080,7 @@ describe('lazy loading', () => {
             "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
             "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
           }
-        },        
+        },
       },
       type: "question"
     }]
@@ -1087,7 +1099,7 @@ describe('lazy loading', () => {
           movie: {
             links: {
               "self": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/relationships/movie",
-              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"            
+              "related": "http://localhost:3000/api/v1/actor/1c9d234b-66c4-411e-b785-955d57db5536/movie"
             }
           }
         }
@@ -1097,6 +1109,6 @@ describe('lazy loading', () => {
 
   it('basic test', () => {
     const result = normalize(json);
-    expect(isEqual(result, output)).to.be.true;    
+    expect(isEqual(result, output)).to.be.true;
   });
 });
