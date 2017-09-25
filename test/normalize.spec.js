@@ -14,6 +14,9 @@ describe('data is normalized', () => {
         },
         links: {
           self: 'http://www.example.com/post/3'
+        },
+        meta: {
+          'like-count': 35
         }
       },
       {
@@ -40,6 +43,9 @@ describe('data is normalized', () => {
         },
         links: {
           self: 'http://www.example.com/post/3'
+        },
+        meta: {
+          'like-count': 35
         }
       },
       "4": {
