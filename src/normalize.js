@@ -75,6 +75,11 @@ function extractEntities(json, { camelizeKeys }) {
       ret[type][elem.id].relationships =
         extractRelationships(elem.relationships, { camelizeKeys });
     }
+    
+    if (elem.meta) {
+      ret[type][elem.id].meta = elem.meta;
+    }
+
   });
 
   return ret;
