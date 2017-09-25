@@ -1,3 +1,6 @@
+###v. 0.4.2 (25 Sep 2017)
+Added meta support per spec (https://github.com/yury-dymov/json-api-normalizer/issues/19)
+
 ###v. 0.4.1 (11 Jun 2017)
 Including self links in normalization (https://github.com/yury-dymov/json-api-normalizer/pull/16)
 
