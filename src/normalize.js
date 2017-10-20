@@ -42,6 +42,20 @@ function extractRelationships(relationships, { camelizeKeys }) {
   return ret;
 }
 
+function camelizeNestedKeys(attributeValue) {
+  if (attributeValue === null || typeof attributeValue !== 'object') {
+    return attributeValue;
+  }
+
+  const copy = {};
+
+  keys(attributeValue).forEach((k) => {
+    copy[camelCase(k)] = camelizeNestedKeys(attributeValue[k]);
+  });
+
+  return copy;
+}
+
 function extractEntities(json, { camelizeKeys }) {
   const ret = {};
 
@@ -57,7 +71,7 @@ function extractEntities(json, { camelizeKeys }) {
       ret[type][elem.id].attributes = {};
 
       keys(elem.attributes).forEach((key) => {
-        ret[type][elem.id].attributes[camelCase(key)] = elem.attributes[key];
+        ret[type][elem.id].attributes[camelCase(key)] = camelizeNestedKeys(elem.attributes[key]);
       });
     } else {
       ret[type][elem.id].attributes = elem.attributes;
@@ -75,7 +89,7 @@ function extractEntities(json, { camelizeKeys }) {
       ret[type][elem.id].relationships =
         extractRelationships(elem.relationships, { camelizeKeys });
     }
-    
+
     if (elem.meta) {
       ret[type][elem.id].meta = elem.meta;
     }

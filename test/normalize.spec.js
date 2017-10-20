@@ -97,6 +97,37 @@ describe('data is normalized', () => {
 
     expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
   });
+
+  it('nested keys camelized', () => {
+    const input = {
+      data: [{
+        type: 'post',
+        id: 1,
+        attributes: {
+          key_is_camelized: 2,
+          another_key: {
+            and_yet_another: 3
+          }
+        }
+      }]
+    };
+
+    const camelizedOutput = {
+      post: {
+        "1": {
+          id: 1,
+          attributes: {
+            keyIsCamelized: 2,
+            anotherKey: {
+              andYetAnother: 3
+            }
+          }
+        }
+      }
+    };
+
+    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
+  });
 });
 
 describe('included is normalized', () => {
