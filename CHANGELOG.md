@@ -1,3 +1,6 @@
+###v. 0.4.3 (20 Oct 2017)
+Nested attribute keys are also camelized now (https://github.com/yury-dymov/json-api-normalizer/issues/21)
+
 ###v. 0.4.2 (25 Sep 2017)
 Added meta support per spec (https://github.com/yury-dymov/json-api-normalizer/issues/19)
 
