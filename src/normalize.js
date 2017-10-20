@@ -82,7 +82,7 @@ function extractEntities(json, { camelizeKeys }) {
 
       keys(elem.links).forEach((key) => {
         ret[type][elem.id].links[key] = elem.links[key];
-      })
+      });
     }
 
     if (elem.relationships) {
@@ -93,7 +93,6 @@ function extractEntities(json, { camelizeKeys }) {
     if (elem.meta) {
       ret[type][elem.id].meta = elem.meta;
     }
-
   });
 
   return ret;
