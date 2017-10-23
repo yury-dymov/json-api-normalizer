@@ -128,6 +128,31 @@ describe('data is normalized', () => {
 
     expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
   });
+
+  it('arrays are still array after camelization', () => {
+    const input = {
+      data: [{
+        type: 'post',
+        id: 1,
+        attributes: {
+          key_is_camelized: ['a', 'b']
+        }
+      }]
+    };
+
+    const camelizedOutput = {
+      post: {
+        "1": {
+          id: 1,
+          attributes: {
+            keyIsCamelized: ['a', 'b']
+          }
+        }
+      }
+    };
+
+    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;    
+  });
 });
 
 describe('included is normalized', () => {

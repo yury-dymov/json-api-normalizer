@@ -1,3 +1,6 @@
+###v. 0.4.4 (23 Oct 2017)
+While we process nested objects, we shouldn't change array attributes to object (https://github.com/yury-dymov/json-api-normalizer/issues/22)
+
 ###v. 0.4.3 (20 Oct 2017)
 Nested attribute keys are also camelized now (https://github.com/yury-dymov/json-api-normalizer/issues/21)
 

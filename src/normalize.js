@@ -43,7 +43,7 @@ function extractRelationships(relationships, { camelizeKeys }) {
 }
 
 function camelizeNestedKeys(attributeValue) {
-  if (attributeValue === null || typeof attributeValue !== 'object') {
+  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue)) {
     return attributeValue;
   }
 
