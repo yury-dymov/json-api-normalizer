@@ -42,8 +42,12 @@ function extractRelationships(relationships, { camelizeKeys }) {
   return ret;
 }
 
+function isDate(attributeValue) {
+  return Object.prototype.toString.call(attributeValue) === '[object Date]';
+}
+
 function camelizeNestedKeys(attributeValue) {
-  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue)) {
+  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue) || isDate(attributeValue)) {
     return attributeValue;
   }
 

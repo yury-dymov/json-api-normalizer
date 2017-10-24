@@ -153,6 +153,33 @@ describe('data is normalized', () => {
 
     expect(isEqual(normalize(input), camelizedOutput)).to.be.true;    
   });
+
+  it('dates should not be affected by camilization', () => {
+    const date = new Date();
+
+    const obj = {
+      data: {
+        id: 1,
+        type: 'projects',
+        attributes: {
+          'started-at': date
+        }
+      }
+    };
+
+    const output = {
+      projects: {
+        "1": {
+          id: 1,
+          attributes: {
+            startedAt: date
+          }
+        }
+      }
+    };
+
+    expect(isEqual(normalize(obj), output)).to.be.true;    
+  });
 });
 
 describe('included is normalized', () => {
