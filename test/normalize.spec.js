@@ -290,7 +290,7 @@ describe('relationships', () => {
           }
         }
       }
-    }
+    };
 
     const result = normalize(json);
 
@@ -1199,5 +1199,61 @@ describe('lazy loading', () => {
   it('basic test', () => {
     const result = normalize(json);
     expect(isEqual(result, output)).to.be.true;
+  });
+});
+
+describe('relationship meta', () => {
+  const json1 = {
+    "data": [{
+      "type": "post",
+      "relationships": {
+        "question": {
+          "data": {
+            "type": "question",
+            "id": "295"
+          },
+          "meta": {
+            "membership": {
+              "createdAt": "2017-11-22",
+              "updatedAt": "2017-11-26"
+            }
+          }
+        }
+      },
+      "id": 2620,
+      "attributes": {
+        "text": "hello",
+      }
+    }]
+  };
+
+  const output1 = {
+    post: {
+      "2620": {
+        id: 2620,
+        attributes: {
+          "text": "hello",
+        },
+        relationships: {
+          question: {
+            data: {
+              id: "295",
+              type: "question"
+            },
+            meta: {
+              membership: {
+                createdAt: "2017-11-22",
+                updatedAt: "2017-11-26"
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+
+  it('meta in relationship', () => {
+    const result = normalize(json1);
+    expect(isEqual(result, output1)).to.be.true;
   });
 });
