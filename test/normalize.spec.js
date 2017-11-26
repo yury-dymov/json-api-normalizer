@@ -1214,8 +1214,8 @@ describe('relationship meta', () => {
           },
           "meta": {
             "membership": {
-              "createdAt": "2017-11-22",
-              "updatedAt": "2017-11-26"
+              "created_at": "2017-11-22",
+              "updated_at": "2017-11-26"
             }
           }
         }

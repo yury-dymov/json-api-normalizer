@@ -12,6 +12,20 @@ function wrap(json) {
   return [json];
 }
 
+function camelizeNestedKeys(attributeValue) {
+  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue) || isDate(attributeValue)) {
+    return attributeValue;
+  }
+
+  const copy = {};
+
+  keys(attributeValue).forEach((k) => {
+    copy[camelCase(k)] = camelizeNestedKeys(attributeValue[k]);
+  });
+
+  return copy;
+}
+
 function extractRelationships(relationships, { camelizeKeys }) {
   const ret = {};
   keys(relationships).forEach((key) => {
@@ -35,7 +49,7 @@ function extractRelationships(relationships, { camelizeKeys }) {
       }
 
       if (typeof relationship.meta !== 'undefined') {
-        ret[name].meta = relationship.meta;
+        ret[name].meta = camelizeNestedKeys(relationship.meta);
       }
     }
 
@@ -48,20 +62,6 @@ function extractRelationships(relationships, { camelizeKeys }) {
 
 function isDate(attributeValue) {
   return Object.prototype.toString.call(attributeValue) === '[object Date]';
-}
-
-function camelizeNestedKeys(attributeValue) {
-  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue) || isDate(attributeValue)) {
-    return attributeValue;
-  }
-
-  const copy = {};
-
-  keys(attributeValue).forEach((k) => {
-    copy[camelCase(k)] = camelizeNestedKeys(attributeValue[k]);
-  });
-
-  return copy;
 }
 
 function extractEntities(json, { camelizeKeys }) {
