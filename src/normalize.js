@@ -34,7 +34,7 @@ function extractRelationships(relationships, { camelizeKeys }) {
         ret[name].data = relationship.data;
       }
 
-      if (relationship.meta !== 'undefined') {
+      if (typeof relationship.meta !== 'undefined') {
         ret[name].meta = relationship.meta;
       }
     }
