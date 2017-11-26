@@ -4,11 +4,11 @@
   "description": "JSON API response normalizer",
   "main": "dist/bundle.js",
   "scripts": {
-    "build": "NODE_ENV=production webpack -p",
-    "clean": "rimraf dist coverage lib",
-    "coverage": "NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:babel-core/register && NODE_ENV=production webpack -p",
-    "lint": "eslint src --ext .js",
-    "test": "mocha --compilers js:babel-core/register"
+    "build": "cross-env NODE_ENV=production webpack -p",
+    "clean": "cross-env rimraf dist coverage lib",
+    "coverage": "cross-env NODE_ENV=production webpack && istanbul cover _mocha -- --compilers js:babel-core/register && NODE_ENV=production webpack -p",
+    "lint": "cross-env eslint src --ext .js",
+    "test": "cross-env mocha --compilers js:babel-core/register"
   },
   "repository": {
     "type": "git",
@@ -34,6 +34,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "chai": "^3.5.0",
+    "cross-env": "^5.1.1",
     "eslint": "^3.12.2",
     "eslint-config-airbnb": "^13.0.0",
     "eslint-loader": "^1.6.1",
