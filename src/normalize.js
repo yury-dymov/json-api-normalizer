@@ -33,6 +33,10 @@ function extractRelationships(relationships, { camelizeKeys }) {
       } else {
         ret[name].data = relationship.data;
       }
+
+      if (relationship.meta !== 'undefined') {
+        ret[name].meta = relationship.meta;
+      }
     }
 
     if (relationship.links) {
