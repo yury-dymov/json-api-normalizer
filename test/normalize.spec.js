@@ -1213,9 +1213,16 @@ describe('relationship meta', () => {
             "id": "295"
           },
           "meta": {
-            "membership": {
-              "created_at": "2017-11-22",
-              "updated_at": "2017-11-26"
+            "membership": [
+              {
+                "post_id": "2620",
+                "question_id": "295",
+                "created_at": "2017-11-22",
+                "updated_at": "2017-11-26"
+              }
+            ],
+            "review-status": {
+              "content_flags": "4"
             }
           }
         }
@@ -1241,9 +1248,16 @@ describe('relationship meta', () => {
               type: "question"
             },
             meta: {
-              membership: {
-                createdAt: "2017-11-22",
-                updatedAt: "2017-11-26"
+              membership: [
+                {
+                  postId: "2620",
+                  questionId: "295",
+                  createdAt: "2017-11-22",
+                  updatedAt: "2017-11-26"
+                }
+              ],
+              reviewStatus: {
+                contentFlags: "4"
               }
             }
           }

@@ -12,9 +12,17 @@ function wrap(json) {
   return [json];
 }
 
+function isDate(attributeValue) {
+  return Object.prototype.toString.call(attributeValue) === '[object Date]';
+}
+
 function camelizeNestedKeys(attributeValue) {
-  if (attributeValue === null || typeof attributeValue !== 'object' || isArray(attributeValue) || isDate(attributeValue)) {
+  if (attributeValue === null || typeof attributeValue !== 'object' || isDate(attributeValue)) {
     return attributeValue;
+  }
+
+  if (isArray(attributeValue)) {
+    return attributeValue.map(camelizeNestedKeys);
   }
 
   const copy = {};
@@ -58,10 +66,6 @@ function extractRelationships(relationships, { camelizeKeys }) {
     }
   });
   return ret;
-}
-
-function isDate(attributeValue) {
-  return Object.prototype.toString.call(attributeValue) === '[object Date]';
 }
 
 function extractEntities(json, { camelizeKeys }) {
