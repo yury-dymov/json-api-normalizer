@@ -1207,11 +1207,13 @@ describe('relationship meta', () => {
     "data": [{
       "type": "post",
       "relationships": {
-        "question": {
-          "data": {
-            "type": "question",
-            "id": "295"
-          },
+        "questions": {
+          "data": [
+            {
+              "type": "question",
+              "id": "295"
+            }
+          ],
           "meta": {
             "membership": [
               {
@@ -1227,7 +1229,7 @@ describe('relationship meta', () => {
           }
         }
       },
-      "id": 2620,
+      "id": "2620",
       "attributes": {
         "text": "hello",
       }
@@ -1237,16 +1239,18 @@ describe('relationship meta', () => {
   const output1 = {
     post: {
       "2620": {
-        id: 2620,
+        id: "2620",
         attributes: {
           "text": "hello",
         },
         relationships: {
-          question: {
-            data: {
-              id: "295",
-              type: "question"
-            },
+          questions: {
+            data: [
+              {
+                id: "295",
+                type: "question"
+              }
+            ],
             meta: {
               membership: [
                 {
