@@ -1,3 +1,7 @@
+###v. 0.4.6 (29 Nov 2017)
+- Meta property is also available for relationship objects (https://github.com/yury-dymov/json-api-normalizer/issues/25)
+- cross-env support added
+
 ###v. 0.4.5 (23 Oct 2017)
 While processing nested objects, we should handle dates accordingly (https://github.com/yury-dymov/json-api-normalizer/issues/23)
 
