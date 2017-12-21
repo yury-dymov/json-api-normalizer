@@ -1,3 +1,6 @@
+###v. 0.4.7 (21 Dec 2017)
+- camelizeKeys is now affecting `meta` as well (https://github.com/yury-dymov/json-api-normalizer/pull/29)
+
 ###v. 0.4.6 (29 Nov 2017)
 - Meta property is also available for relationship objects (https://github.com/yury-dymov/json-api-normalizer/issues/25)
 - cross-env support added
