@@ -103,7 +103,15 @@ function extractEntities(json, { camelizeKeys }) {
     }
 
     if (elem.meta) {
-      ret[type][elem.id].meta = elem.meta;
+      if (camelizeKeys) {
+        ret[type][elem.id].meta = {};
+
+        keys(elem.meta).forEach((key) => {
+          ret[type][elem.id].meta[camelCase(key)] = camelizeNestedKeys(elem.meta[key]);
+        });
+      } else {
+        ret[type][elem.id].meta = elem.meta;
+      }
     }
   });
 
