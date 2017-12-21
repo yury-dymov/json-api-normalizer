@@ -911,6 +911,9 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expires_at: 1513868982
         }
       }]
     };
@@ -1000,7 +1003,11 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expires_at: 1513868982
         }
+
       }
     }
   };
@@ -1090,6 +1097,9 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expiresAt: 1513868982
         }
       }
     }
