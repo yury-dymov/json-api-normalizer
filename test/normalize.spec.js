@@ -16,7 +16,7 @@ describe('data is normalized', () => {
           self: 'http://www.example.com/post/3'
         },
         meta: {
-          'like-count': 35
+          likes: 35
         }
       },
       {
@@ -45,7 +45,7 @@ describe('data is normalized', () => {
           self: 'http://www.example.com/post/3'
         },
         meta: {
-          'like-count': 35
+          likes: 35
         }
       },
       "4": {
@@ -80,6 +80,9 @@ describe('data is normalized', () => {
         id: 1,
         attributes: {
           'key-is-camelized': 2
+        },
+        meta: {
+          'this-key-too': 3
         }
       }]
     }
@@ -90,6 +93,9 @@ describe('data is normalized', () => {
           id: 1,
           attributes: {
             keyIsCamelized: 2
+          },
+          meta: {
+            thisKeyToo: 3
           }
         }
       }
@@ -151,7 +157,7 @@ describe('data is normalized', () => {
       }
     };
 
-    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;    
+    expect(isEqual(normalize(input), camelizedOutput)).to.be.true;
   });
 
   it('dates should not be affected by camilization', () => {
@@ -178,7 +184,7 @@ describe('data is normalized', () => {
       }
     };
 
-    expect(isEqual(normalize(obj), output)).to.be.true;    
+    expect(isEqual(normalize(obj), output)).to.be.true;
   });
 });
 
@@ -905,6 +911,9 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expires_at: 1513868982
         }
       }]
     };
@@ -994,7 +1003,11 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expires_at: 1513868982
         }
+
       }
     }
   };
@@ -1084,6 +1097,9 @@ describe('complex', () => {
         id: 4969,
         attributes: {
           text: 'hello2'
+        },
+        meta: {
+            expiresAt: 1513868982
         }
       }
     }
