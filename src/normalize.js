@@ -157,15 +157,15 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
     });
 
     metaObject.data = meta;
+  }
 
-    if (json.links) {
-      metaObject.links = json.links;
-      ret.meta[doFilterEndpoint(endpoint)].links = json.links;
-    }
+  if (json.links) {
+    metaObject.links = json.links;
+    ret.meta[doFilterEndpoint(endpoint)].links = json.links;
+  }
 
-    if (json.meta) {
-      metaObject.meta = json.meta;
-    }
+  if (json.meta) {
+    metaObject.meta = json.meta;
   }
 
   return ret;
