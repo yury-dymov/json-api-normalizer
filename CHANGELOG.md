@@ -1,3 +1,6 @@
+###v. 0.4.8 (01 Feb 2018)
+- metadata and links are saved if `data` is null per spec (https://github.com/yury-dymov/json-api-normalizer/pull/31)
+
 ###v. 0.4.7 (21 Dec 2017)
 - camelizeKeys is now affecting `meta` as well (https://github.com/yury-dymov/json-api-normalizer/pull/29)
 
