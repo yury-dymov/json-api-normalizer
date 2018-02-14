@@ -78,6 +78,7 @@ function extractEntities(json, { camelizeKeys }) {
     ret[type][elem.id] = ret[type][elem.id] || {
       id: elem.id,
     };
+    ret[type][elem.id].type = elem.type;
 
     if (camelizeKeys) {
       ret[type][elem.id].attributes = {};
