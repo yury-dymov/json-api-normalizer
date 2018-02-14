@@ -35,6 +35,7 @@ describe('data is normalized', () => {
   const output = {
     post: {
       3: {
+        type: 'post',
         id: 3,
         attributes: {
           text: 'hello',
@@ -48,6 +49,7 @@ describe('data is normalized', () => {
         },
       },
       4: {
+        type: 'post',
         id: 4,
         attributes: {
           text: 'hello world',
@@ -91,6 +93,7 @@ describe('data is normalized', () => {
     const camelizedOutput = {
       post: {
         1: {
+          type: 'post',
           id: 1,
           attributes: {
             keyIsCamelized: 2,
@@ -126,6 +129,7 @@ describe('data is normalized', () => {
     const camelizedOutput = {
       post: {
         1: {
+          type: 'post',
           id: 1,
           attributes: {
             keyIsCamelized: 2,
@@ -158,6 +162,7 @@ describe('data is normalized', () => {
     const camelizedOutput = {
       post: {
         1: {
+          type: 'post',
           id: 1,
           attributes: {
             keyIsCamelized: ['a', 'b'],
@@ -187,6 +192,7 @@ describe('data is normalized', () => {
     const output = {
       projects: {
         1: {
+          type: 'projects',
           id: 1,
           attributes: {
             startedAt: date,
@@ -249,6 +255,7 @@ describe('included is normalized', () => {
   const output = {
     post: {
       3: {
+        type: 'post',
         id: 3,
         attributes: {
           text: 'hello',
@@ -256,6 +263,7 @@ describe('included is normalized', () => {
         },
       },
       4: {
+        type: 'post',
         id: 4,
         attributes: {
           text: 'hello world',
@@ -300,6 +308,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -339,6 +348,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -381,6 +391,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -428,6 +439,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -489,6 +501,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -553,6 +566,7 @@ describe('relationships', () => {
     const output = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -604,6 +618,7 @@ describe('meta', () => {
   const output = {
     post: {
       2620: {
+        type: 'post',
         id: 2620,
         attributes: {
           text: 'hello',
@@ -665,6 +680,7 @@ describe('meta', () => {
   const output2 = {
     post: {
       2620: {
+        type: 'post',
         id: 2620,
         attributes: {
           text: 'hello',
@@ -706,6 +722,7 @@ describe('meta', () => {
   const output3 = {
     post: {
       2620: {
+        type: 'post',
         id: 2620,
         attributes: {
           text: 'hello',
@@ -802,6 +819,7 @@ describe('meta', () => {
     const output3 = {
       post: {
         2620: {
+          type: 'post',
           id: 2620,
           attributes: {
             text: 'hello',
@@ -865,6 +883,7 @@ describe('meta', () => {
     const output = {
       post: {
         1: {
+          type: 'post',
           id: 1,
           attributes: {
             text: 'hello',
@@ -992,6 +1011,7 @@ describe('complex', () => {
   const output = {
     question: {
       29: {
+        type: 'question',
         id: 29,
         attributes: {
           yday: 228,
@@ -1016,6 +1036,7 @@ describe('complex', () => {
     },
     'post-block': {
       2454: {
+        type: 'post-block',
         id: 2454,
         attributes: {},
         relationships: {
@@ -1040,6 +1061,7 @@ describe('complex', () => {
         },
       },
       4601: {
+        type: 'post-block',
         id: 4601,
         attributes: {},
         relationships: {
@@ -1066,6 +1088,7 @@ describe('complex', () => {
     },
     user: {
       1: {
+        type: 'user',
         id: 1,
         attributes: {
           slug: 'superyuri',
@@ -1074,12 +1097,14 @@ describe('complex', () => {
     },
     post: {
       1606: {
+        type: 'post',
         id: 1606,
         attributes: {
           text: 'hello1',
         },
       },
       4969: {
+        type: 'post',
         id: 4969,
         attributes: {
           text: 'hello2',
@@ -1094,6 +1119,7 @@ describe('complex', () => {
   const output2 = {
     question: {
       29: {
+        type: 'question',
         id: 29,
         attributes: {
           yday: 228,
@@ -1118,6 +1144,7 @@ describe('complex', () => {
     },
     postBlock: {
       2454: {
+        type: 'post-block',
         id: 2454,
         attributes: {},
         relationships: {
@@ -1142,6 +1169,7 @@ describe('complex', () => {
         },
       },
       4601: {
+        type: 'post-block',
         id: 4601,
         attributes: {},
         relationships: {
@@ -1168,6 +1196,7 @@ describe('complex', () => {
     },
     user: {
       1: {
+        type: 'user',
         id: 1,
         attributes: {
           slug: 'superyuri',
@@ -1176,12 +1205,14 @@ describe('complex', () => {
     },
     post: {
       1606: {
+        type: 'post',
         id: 1606,
         attributes: {
           text: 'hello1',
         },
       },
       4969: {
+        type: 'post',
         id: 4969,
         attributes: {
           text: 'hello2',
@@ -1296,6 +1327,7 @@ describe('lazy loading', () => {
   const output = {
     question: {
       29: {
+        type: 'question',
         id: 29,
         attributes: {
           yday: 228,
@@ -1362,6 +1394,7 @@ describe('relationship meta', () => {
   const output1 = {
     post: {
       2620: {
+        type: 'post',
         id: '2620',
         attributes: {
           text: 'hello',
