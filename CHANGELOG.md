@@ -1,3 +1,6 @@
+###v. 0.4.9 (14 Feb 2018)
+- type is propogated to object (https://github.com/yury-dymov/json-api-normalizer/issues/32)
+
 ###v. 0.4.8 (01 Feb 2018)
 - metadata and links are saved if `data` is null per spec (https://github.com/yury-dymov/json-api-normalizer/pull/31)
 
