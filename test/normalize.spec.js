@@ -1023,11 +1023,11 @@ describe('complex', () => {
             data: [
               {
                 id: 4601,
-                type: 'post-block',
+                type: 'postBlock',
               },
               {
                 id: 2454,
-                type: 'post-block',
+                type: 'postBlock',
               },
             ],
           },
@@ -1036,7 +1036,7 @@ describe('complex', () => {
     },
     'post-block': {
       2454: {
-        type: 'post-block',
+        type: 'postBlock',
         id: 2454,
         attributes: {},
         relationships: {
@@ -1061,7 +1061,7 @@ describe('complex', () => {
         },
       },
       4601: {
-        type: 'post-block',
+        type: 'postBlock',
         id: 4601,
         attributes: {},
         relationships: {
@@ -1136,6 +1136,114 @@ describe('complex', () => {
               {
                 id: 2454,
                 type: 'postBlock',
+              },
+            ],
+          },
+        },
+      },
+    },
+    postBlock: {
+      2454: {
+        type: 'postBlock',
+        id: 2454,
+        attributes: {},
+        relationships: {
+          user: {
+            data: {
+              type: 'user',
+              id: 1,
+            },
+          },
+          posts: {
+            data: [
+              {
+                type: 'post',
+                id: 4969,
+              },
+              {
+                type: 'post',
+                id: 1606,
+              },
+            ],
+          },
+        },
+      },
+      4601: {
+        type: 'postBlock',
+        id: 4601,
+        attributes: {},
+        relationships: {
+          user: {
+            data: {
+              type: 'user',
+              id: 1,
+            },
+          },
+          posts: {
+            data: [
+              {
+                type: 'post',
+                id: 4969,
+              },
+              {
+                type: 'post',
+                id: 1606,
+              },
+            ],
+          },
+        },
+      },
+    },
+    user: {
+      1: {
+        type: 'user',
+        id: 1,
+        attributes: {
+          slug: 'superyuri',
+        },
+      },
+    },
+    post: {
+      1606: {
+        type: 'post',
+        id: 1606,
+        attributes: {
+          text: 'hello1',
+        },
+      },
+      4969: {
+        type: 'post',
+        id: 4969,
+        attributes: {
+          text: 'hello2',
+        },
+        meta: {
+          expiresAt: 1513868982,
+        },
+      },
+    },
+  };
+
+  const output3 = {
+    question: {
+      29: {
+        type: 'question',
+        id: 29,
+        attributes: {
+          yday: 228,
+          text: 'Какие качества Вы больше всего цените в женщинах?',
+          slug: 'tbd',
+        },
+        relationships: {
+          postBlocks: {
+            data: [
+              {
+                id: 4601,
+                type: 'post-block',
+              },
+              {
+                id: 2454,
+                type: 'post-block',
               },
             ],
           },
@@ -1236,6 +1344,18 @@ describe('complex', () => {
     expect(result).to.deep.eql(output2);
   });
 
+  it('test data camelizeTypeValues: false', () => {
+    const result = normalize(json, { camelizeTypeValues: false });
+
+    expect(result).to.deep.eql(output3);
+  });
+
+  it('test data camelizeTypeValues: true', () => {
+    const result = normalize(json, { camelizeTypeValues: true });
+
+    expect(result).to.deep.eql(output2);
+  });
+
   const outputMeta = {
     '/post': {
       data: [
@@ -1246,11 +1366,11 @@ describe('complex', () => {
             'post-blocks': {
               data: [
                 {
-                  type: 'post-block',
+                  type: 'postBlock',
                   id: 4601,
                 },
                 {
-                  type: 'post-block',
+                  type: 'postBlock',
                   id: 2454,
                 },
               ],
@@ -1286,6 +1406,31 @@ describe('complex', () => {
     },
   };
 
+  const outputMeta3 = {
+    '/post': {
+      data: [
+        {
+          type: 'question',
+          id: 29,
+          relationships: {
+            'postBlocks': {
+              data: [
+                {
+                  type: 'post-block',
+                  id: 4601,
+                },
+                {
+                  type: 'post-block',
+                  id: 2454,
+                },
+              ],
+            },
+          },
+        },
+      ],
+    },
+  };
+
   it('test meta, camelizeKeys: false', () => {
     const result = normalize(json, { endpoint: '/post', camelizeKeys: false });
 
@@ -1294,6 +1439,18 @@ describe('complex', () => {
 
   it('test meta, camelizeKeys: true', () => {
     const result = normalize(json, { endpoint: '/post', camelizeKeys: true });
+
+    expect(result.meta).to.deep.eql(outputMeta2);
+  });
+
+  it('test meta, camelizeTypeValues: false', () => {
+    const result = normalize(json, { endpoint: '/post', camelizeTypeValues: false });
+
+    expect(result.meta).to.deep.eql(outputMeta3);
+  });
+
+  it('test meta, camelizeTypeValues: true', () => {
+    const result = normalize(json, { endpoint: '/post', camelizeTypeValues: true });
 
     expect(result.meta).to.deep.eql(outputMeta2);
   });
