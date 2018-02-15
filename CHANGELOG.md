@@ -1,3 +1,6 @@
+###v. 0.4.10 (14 Feb 2018)
+- new option added `camelizeTypeValues` to control camelization of propogated type (https://github.com/yury-dymov/json-api-normalizer/issues/34)
+
 ###v. 0.4.9 (14 Feb 2018)
 - type is propogated to object (https://github.com/yury-dymov/json-api-normalizer/issues/32)
 
