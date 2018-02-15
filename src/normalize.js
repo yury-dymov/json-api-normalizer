@@ -34,7 +34,7 @@ function camelizeNestedKeys(attributeValue) {
   return copy;
 }
 
-function extractRelationships(relationships, { camelizeKeys }) {
+function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues }) {
   const ret = {};
   keys(relationships).forEach((key) => {
     const relationship = relationships[key];
@@ -45,12 +45,12 @@ function extractRelationships(relationships, { camelizeKeys }) {
       if (isArray(relationship.data)) {
         ret[name].data = relationship.data.map(e => ({
           id: e.id,
-          type: camelizeKeys ? camelCase(e.type) : e.type,
+          type: camelizeTypeValues ? camelCase(e.type) : e.type,
         }));
       } else if (!isNull(relationship.data)) {
         ret[name].data = {
           id: relationship.data.id,
-          type: camelizeKeys ? camelCase(relationship.data.type) : relationship.data.type,
+          type: camelizeTypeValues ? camelCase(relationship.data.type) : relationship.data.type,
         };
       } else {
         ret[name].data = relationship.data;
@@ -68,7 +68,7 @@ function extractRelationships(relationships, { camelizeKeys }) {
   return ret;
 }
 
-function extractEntities(json, { camelizeKeys }) {
+function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
   const ret = {};
 
   wrap(json).forEach((elem) => {
@@ -78,7 +78,7 @@ function extractEntities(json, { camelizeKeys }) {
     ret[type][elem.id] = ret[type][elem.id] || {
       id: elem.id,
     };
-    ret[type][elem.id].type = elem.type;
+    ret[type][elem.id].type = camelizeTypeValues ? camelCase(elem.type) : elem.type;
 
     if (camelizeKeys) {
       ret[type][elem.id].attributes = {};
@@ -100,7 +100,7 @@ function extractEntities(json, { camelizeKeys }) {
 
     if (elem.relationships) {
       ret[type][elem.id].relationships =
-        extractRelationships(elem.relationships, { camelizeKeys });
+        extractRelationships(elem.relationships, { camelizeKeys, camelizeTypeValues });
     }
 
     if (elem.meta) {
@@ -123,7 +123,7 @@ function doFilterEndpoint(endpoint) {
   return endpoint.replace(/\?.*$/, '');
 }
 
-function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
+function extractMetaData(json, endpoint, { camelizeKeys, camelizeTypeValues, filterEndpoint }) {
   const ret = {};
 
   ret.meta = {};
@@ -147,11 +147,14 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
     const meta = [];
 
     wrap(json.data).forEach((object) => {
-      const pObject = { id: object.id, type: camelizeKeys ? camelCase(object.type) : object.type };
+      const pObject = {
+        id: object.id,
+        type: camelizeTypeValues ? camelCase(object.type) : object.type,
+      };
 
       if (object.relationships) {
         pObject.relationships =
-          extractRelationships(object.relationships, { camelizeKeys });
+          extractRelationships(object.relationships, { camelizeKeys, camelizeTypeValues });
       }
 
       meta.push(pObject);
@@ -175,7 +178,7 @@ function extractMetaData(json, endpoint, { camelizeKeys, filterEndpoint }) {
 export default function normalize(json, opts = {}) {
   const ret = {};
   const { endpoint } = opts;
-  let { filterEndpoint, camelizeKeys } = opts;
+  let { filterEndpoint, camelizeKeys, camelizeTypeValues } = opts;
 
   if (typeof filterEndpoint === 'undefined') {
     filterEndpoint = true;
@@ -185,18 +188,26 @@ export default function normalize(json, opts = {}) {
     camelizeKeys = true;
   }
 
+  if (typeof camelizeTypeValues === 'undefined') {
+    camelizeTypeValues = true;
+  }
+
   if (json.data) {
-    merge(ret, extractEntities(json.data, { camelizeKeys }));
+    merge(ret, extractEntities(json.data, { camelizeKeys, camelizeTypeValues }));
   }
 
   if (json.included) {
-    merge(ret, extractEntities(json.included, { camelizeKeys }));
+    merge(ret, extractEntities(json.included, { camelizeKeys, camelizeTypeValues }));
   }
 
   if (endpoint) {
     const endpointKey = filterEndpoint ? doFilterEndpoint(endpoint) : endpoint;
 
-    merge(ret, extractMetaData(json, endpointKey, { camelizeKeys, filterEndpoint }));
+    merge(ret, extractMetaData(json, endpointKey, {
+      camelizeKeys,
+      camelizeTypeValues,
+      filterEndpoint,
+    }));
   }
 
   return ret;
