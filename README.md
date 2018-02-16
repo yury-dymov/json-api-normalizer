@@ -329,8 +329,8 @@ console.log(normalize(json, { camelizeTypeValues: false }));
   }
 }
 */
-
+```
 
 # Copyright
+
 MIT (c) Yury Dymov
-```
