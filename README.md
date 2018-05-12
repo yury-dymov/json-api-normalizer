@@ -142,7 +142,7 @@ console.log(Object.assign({}, d1, d2));
 
 const d1 = normalize(json, { endpoint: '/post-block/2620?page[cursor]=0', filterEndpoint: false });
 const d2 = normalize(json, { endpoint: '/post-block/2620?page[cursor]=20', filterEndpoint: false });
-console.log(Object.assign({}, d1, d2));
+console.log(someFunctionWhichMergesStuff({}, d1, d2));
 /* Output:
 {
   question: {
