@@ -62,7 +62,7 @@ function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues 
     }
 
     if (relationship.links) {
-      ret[name].links = relationship.links;
+      ret[name].links = camelizeKeys ? camelizeNestedKeys(relationship.links) : relationship.links;
     }
   });
   return ret;
@@ -94,7 +94,8 @@ function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
       ret[type][elem.id].links = {};
 
       keys(elem.links).forEach((key) => {
-        ret[type][elem.id].links[key] = elem.links[key];
+        const newKey = camelizeKeys ? camelCase(key) : key;
+        ret[type][elem.id].links[newKey] = elem.links[key];
       });
     }
 
