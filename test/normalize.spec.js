@@ -86,6 +86,9 @@ describe('data is normalized', () => {
           meta: {
             'this-key-too': 3,
           },
+          links: {
+            this_link: 'http://link.com'
+          }
         },
       ],
     };
@@ -101,6 +104,9 @@ describe('data is normalized', () => {
           meta: {
             thisKeyToo: 3,
           },
+          links: {
+            thisLink: 'http://link.com'
+          }
         },
       },
     };
@@ -592,6 +598,62 @@ describe('relationships', () => {
 
     expect(result).to.deep.equal(output);
   });
+
+  it('camelize links', () => {
+    const json = {
+      data: [
+        {
+          type: 'post',
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: 4,
+                  type: 'tag',
+                },
+              ],
+              links: {
+                camel_case: 'http://example.com/api/v1/post/2620/tags',
+              },
+            },
+          },
+          id: 2620,
+          attributes: {
+            text: 'hello',
+          },
+        },
+      ],
+    };
+
+    const output = {
+      post: {
+        2620: {
+          type: 'post',
+          id: 2620,
+          attributes: {
+            text: 'hello',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: 4,
+                  type: 'tag',
+                },
+              ],
+              links: {
+                camelCase: 'http://example.com/api/v1/post/2620/tags',
+              },
+            },
+          },
+        },
+      },
+    };
+
+    const result = normalize(json);
+
+    expect(result).to.deep.equal(output);
+  });
 });
 
 describe('meta', () => {
@@ -979,6 +1041,9 @@ describe('complex', () => {
             ],
           },
         },
+        links: {
+          post_blocks: 'http://link.com'
+        },
         type: 'post-block',
       },
       {
@@ -1038,6 +1103,9 @@ describe('complex', () => {
       2454: {
         type: 'postBlock',
         id: 2454,
+        links: {
+          post_blocks: 'http://link.com'
+        },
         attributes: {},
         relationships: {
           user: {
@@ -1146,6 +1214,9 @@ describe('complex', () => {
       2454: {
         type: 'postBlock',
         id: 2454,
+        links: {
+          postBlocks: 'http://link.com'
+        },
         attributes: {},
         relationships: {
           user: {
@@ -1254,6 +1325,9 @@ describe('complex', () => {
       2454: {
         type: 'post-block',
         id: 2454,
+        links: {
+          postBlocks: 'http://link.com'
+        },
         attributes: {},
         relationships: {
           user: {
