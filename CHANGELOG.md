@@ -1,3 +1,6 @@
+###v. 0.4.11 (28 June 2018)
+- - camelizeKeys is now affecting `links` as well (https://github.com/yury-dymov/json-api-normalizer/pull/41)
+
 ###v. 0.4.10 (14 Feb 2018)
 - new option added `camelizeTypeValues` to control camelization of propogated type (https://github.com/yury-dymov/json-api-normalizer/issues/34)
 

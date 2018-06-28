@@ -1,6 +1,6 @@
 {
   "name": "json-api-normalizer",
-  "version": "0.4.10",
+  "version": "0.4.11",
   "description": "JSON API response normalizer",
   "main": "dist/bundle.js",
   "scripts": {
@@ -42,7 +42,7 @@
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.8.0",
     "istanbul": "^1.1.0-alpha.1",
-    "mocha": "^3.2.0",
+    "mocha": "^5.2.0",
     "rimraf": "^2.5.4",
     "webpack": "^1.14.0",
     "webpack-node-externals": "^1.5.4"
