@@ -48,6 +48,6 @@
     "webpack-node-externals": "^1.5.4"
   },
   "dependencies": {
-    "lodash": "^4.17.2"
+    "lodash": "^4.17.10"
   }
 }
