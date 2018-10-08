@@ -1688,7 +1688,7 @@ describe('relationship meta', () => {
             next: 'http://example.com/articles?page[number]=4&page[size]=1',
             last: 'http://example.com/articles?page[number]=13&page[size]=1',
           },
-          meta: { 'total-pages': 13 },
+          meta: { totalPages: 13 },
         },
       },
     };

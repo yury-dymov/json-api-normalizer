@@ -68,6 +68,20 @@ function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues 
   return ret;
 }
 
+function processMeta(metaObject, { camelizeKeys }) {
+  if (camelizeKeys) {
+    const meta = {};
+
+    keys(metaObject).forEach((key) => {
+      meta[camelCase(key)] = camelizeNestedKeys(metaObject[key]);
+    });
+
+    return meta;
+  } else {
+    return metaObject;
+  }
+}
+
 function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
   const ret = {};
 
@@ -105,15 +119,7 @@ function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
     }
 
     if (elem.meta) {
-      if (camelizeKeys) {
-        ret[type][elem.id].meta = {};
-
-        keys(elem.meta).forEach((key) => {
-          ret[type][elem.id].meta[camelCase(key)] = camelizeNestedKeys(elem.meta[key]);
-        });
-      } else {
-        ret[type][elem.id].meta = elem.meta;
-      }
+      ret[type][elem.id].meta = processMeta(elem.meta, { camelizeKeys });
     }
   });
 
@@ -170,7 +176,7 @@ function extractMetaData(json, endpoint, { camelizeKeys, camelizeTypeValues, fil
   }
 
   if (json.meta) {
-    metaObject.meta = json.meta;
+    metaObject.meta = processMeta(json.meta, { camelizeKeys });
   }
 
   return ret;
