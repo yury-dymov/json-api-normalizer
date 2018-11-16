@@ -1,3 +1,6 @@
+###v. 0.4.13 (16 Nov 2018)
+- updated deps
+
 ###v. 0.4.12 (08 Oct 2018)
 - camelizeKeys sometimes was not applied to `meta` as expected (https://github.com/yury-dymov/json-api-normalizer/issues/48) 
 

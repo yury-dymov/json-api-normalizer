@@ -3,7 +3,6 @@ var webpack = require('webpack');
 var nodeExternals = require('webpack-node-externals');
 
 module.exports = {
-  eval: 'eval-source-map',
   externals: [nodeExternals()],
   entry: [
     './src/normalize'
@@ -18,17 +17,17 @@ module.exports = {
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
-    }),
-    new webpack.optimize.OccurenceOrderPlugin()
+    })
   ],
   module: {
-    loaders: [
-      { test: /\.js?$/, loader: 'babel', exclude: /node_modules/ },
+    rules: [
+      { test: /\.js?$/, use: ['babel-loader', 'eslint-loader'], exclude: /node_modules/ },
     ]
   },
   resolve: {
-    root: path.join(__dirname, 'src'),
-    modulesDirectories: [ 'node_modules' ],
-    extensions: ['', '.js']
+    modules: [
+      path.join(__dirname, 'src'),
+      'node_modules'
+    ]
   }
 };

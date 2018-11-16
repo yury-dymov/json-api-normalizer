@@ -77,9 +77,9 @@ function processMeta(metaObject, { camelizeKeys }) {
     });
 
     return meta;
-  } else {
-    return metaObject;
   }
+
+  return metaObject;
 }
 
 function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
@@ -114,8 +114,10 @@ function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
     }
 
     if (elem.relationships) {
-      ret[type][elem.id].relationships =
-        extractRelationships(elem.relationships, { camelizeKeys, camelizeTypeValues });
+      ret[type][elem.id].relationships = extractRelationships(elem.relationships, {
+        camelizeKeys,
+        camelizeTypeValues,
+      });
     }
 
     if (elem.meta) {
@@ -160,8 +162,10 @@ function extractMetaData(json, endpoint, { camelizeKeys, camelizeTypeValues, fil
       };
 
       if (object.relationships) {
-        pObject.relationships =
-          extractRelationships(object.relationships, { camelizeKeys, camelizeTypeValues });
+        pObject.relationships = extractRelationships(object.relationships, {
+          camelizeKeys,
+          camelizeTypeValues,
+        });
       }
 
       meta.push(pObject);
