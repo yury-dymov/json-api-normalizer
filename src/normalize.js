@@ -1,33 +1,21 @@
-import camelCase from 'lodash/camelCase';
-import isArray from 'lodash/isArray';
-import isNull from 'lodash/isNull';
-import keys from 'lodash/keys';
-import merge from 'lodash/merge';
+import merge from 'lodash.merge';
 
-function wrap(json) {
-  if (isArray(json)) {
-    return json;
-  }
-
-  return [json];
-}
-
-function isDate(attributeValue) {
-  return Object.prototype.toString.call(attributeValue) === '[object Date]';
-}
+const wrap = json => (Array.isArray(json) ? json : [json]);
+const camelCase = value => value.replace(/[_-](\w)/g, (_, w) => w.toUpperCase());
+const isDate = attributeValue => Object.prototype.toString.call(attributeValue) === '[object Date]';
 
 function camelizeNestedKeys(attributeValue) {
   if (attributeValue === null || typeof attributeValue !== 'object' || isDate(attributeValue)) {
     return attributeValue;
   }
 
-  if (isArray(attributeValue)) {
+  if (Array.isArray(attributeValue)) {
     return attributeValue.map(camelizeNestedKeys);
   }
 
   const copy = {};
 
-  keys(attributeValue).forEach((k) => {
+  Object.keys(attributeValue).forEach((k) => {
     copy[camelCase(k)] = camelizeNestedKeys(attributeValue[k]);
   });
 
@@ -36,18 +24,18 @@ function camelizeNestedKeys(attributeValue) {
 
 function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues }) {
   const ret = {};
-  keys(relationships).forEach((key) => {
+  Object.keys(relationships).forEach((key) => {
     const relationship = relationships[key];
     const name = camelizeKeys ? camelCase(key) : key;
     ret[name] = {};
 
     if (typeof relationship.data !== 'undefined') {
-      if (isArray(relationship.data)) {
+      if (Array.isArray(relationship.data)) {
         ret[name].data = relationship.data.map(e => ({
           id: e.id,
           type: camelizeTypeValues ? camelCase(e.type) : e.type,
         }));
-      } else if (!isNull(relationship.data)) {
+      } else if (relationship.data !== null) {
         ret[name].data = {
           id: relationship.data.id,
           type: camelizeTypeValues ? camelCase(relationship.data.type) : relationship.data.type,
@@ -72,7 +60,7 @@ function processMeta(metaObject, { camelizeKeys }) {
   if (camelizeKeys) {
     const meta = {};
 
-    keys(metaObject).forEach((key) => {
+    Object.keys(metaObject).forEach((key) => {
       meta[camelCase(key)] = camelizeNestedKeys(metaObject[key]);
     });
 
@@ -97,7 +85,7 @@ function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
     if (camelizeKeys) {
       ret[type][elem.id].attributes = {};
 
-      keys(elem.attributes).forEach((key) => {
+      Object.keys(elem.attributes).forEach((key) => {
         ret[type][elem.id].attributes[camelCase(key)] = camelizeNestedKeys(elem.attributes[key]);
       });
     } else {
@@ -107,7 +95,7 @@ function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
     if (elem.links) {
       ret[type][elem.id].links = {};
 
-      keys(elem.links).forEach((key) => {
+      Object.keys(elem.links).forEach((key) => {
         const newKey = camelizeKeys ? camelCase(key) : key;
         ret[type][elem.id].links[newKey] = elem.links[key];
       });

@@ -27,27 +27,27 @@
   },
   "homepage": "https://github.com/yury-dymov/json-api-normalizer#readme",
   "devDependencies": {
-    "@babel/core": "^7.1.6",
-    "@babel/preset-env": "^7.1.6",
-    "@babel/register": "^7.0.0",
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/register": "^7.4.4",
     "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.4",
+    "babel-loader": "^8.0.6",
     "chai": "^4.2.0",
     "cross-env": "^5.2.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.16.0",
     "eslint-config-airbnb": "^17.1.0",
-    "eslint-loader": "^2.1.1",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-jsx-a11y": "^6.1.2",
-    "eslint-plugin-react": "^7.11.1",
+    "eslint-loader": "^2.1.2",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-jsx-a11y": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0",
     "immutable": "^4.0.0-rc.12",
     "istanbul": "^1.1.0-alpha.1",
     "mocha": "^5.2.0",
-    "rimraf": "^2.6.2",
+    "rimraf": "^2.6.3",
     "webpack": "^3.12.0",
-    "webpack-node-externals": "^1.5.4"
+    "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
-    "lodash": "^4.17.11"
+    "lodash.merge": "^4.6.1"
   }
 }
