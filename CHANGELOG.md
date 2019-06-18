@@ -1,3 +1,6 @@
+###v 0.4.15 (17 Jun 2019)
+- Updated vulnerable deps
+
 ###v. 0.4.14 (16 Nov 2018)
 - updated deps
 
