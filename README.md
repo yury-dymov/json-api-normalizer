@@ -20,6 +20,12 @@ Works great together with [redux-object](https://github.com/yury-dymov/redux-obj
 
 json-api-normalizer was recently featured in SmashingMagazine: https://www.smashingmagazine.com/2017/05/json-api-normalizer-redux/
 
+# Install
+
+```shell
+$ npm install json-api-normalizer
+```
+
 # Example
 
 ```JavaScript
