@@ -1,3 +1,7 @@
+###v 1.0.0 (08 Jul 2020)
+- Cleaner defaults (https://github.com/yury-dymov/json-api-normalizer/pull/63)
+- Given that this library is stable and used by many others, I think it's a good time to make a stable 1.0.0 :)
+
 ###v 0.4.16 (05 Aug 2019)
 - Updated vulnerable deps
 
