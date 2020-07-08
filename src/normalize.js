@@ -186,22 +186,13 @@ function extractMetaData(json, endpoint, { camelizeKeys, camelizeTypeValues, fil
   return ret;
 }
 
-export default function normalize(json, opts = {}) {
+export default function normalize(json, {
+  filterEndpoint = true,
+  camelizeKeys = true,
+  camelizeTypeValues = true,
+  endpoint,
+} = {}) {
   const ret = {};
-  const { endpoint } = opts;
-  let { filterEndpoint, camelizeKeys, camelizeTypeValues } = opts;
-
-  if (typeof filterEndpoint === 'undefined') {
-    filterEndpoint = true;
-  }
-
-  if (typeof camelizeKeys === 'undefined') {
-    camelizeKeys = true;
-  }
-
-  if (typeof camelizeTypeValues === 'undefined') {
-    camelizeTypeValues = true;
-  }
 
   if (json.data) {
     merge(ret, extractEntities(json.data, { camelizeKeys, camelizeTypeValues }));
