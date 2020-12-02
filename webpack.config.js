@@ -1,6 +1,7 @@
-var path = require('path');
-var webpack = require('webpack');
-var nodeExternals = require('webpack-node-externals');
+const path = require('path');
+const webpack = require('webpack');
+const nodeExternals = require('webpack-node-externals');
+const ESLintPlugin = require('eslint-webpack-plugin');
 
 module.exports = {
   externals: [nodeExternals()],
@@ -17,11 +18,12 @@ module.exports = {
       'process.env': {
         'NODE_ENV': JSON.stringify('production')
       }
-    })
+    }),
+    new ESLintPlugin()
   ],
   module: {
     rules: [
-      { test: /\.js?$/, use: ['babel-loader', 'eslint-loader'], exclude: /node_modules/ },
+      { test: /\.js?$/, use: ['babel-loader'], exclude: /node_modules/ },
     ]
   },
   resolve: {

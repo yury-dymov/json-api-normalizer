@@ -1,3 +1,6 @@
+### v 1.0.1 (2nd Dec 2020)
+- Deps update
+
 ### v 1.0.0 (08 Jul 2020)
 - Cleaner defaults (https://github.com/yury-dymov/json-api-normalizer/pull/63)
 - Given that this library is stable and used by many others, I think it's a good time to make a stable 1.0.0 :)
@@ -12,7 +15,7 @@
 - updated deps
 
 ### v. 0.4.12 (08 Oct 2018)
-- camelizeKeys sometimes was not applied to `meta` as expected (https://github.com/yury-dymov/json-api-normalizer/issues/48) 
+- camelizeKeys sometimes was not applied to `meta` as expected (https://github.com/yury-dymov/json-api-normalizer/issues/48)
 
 ### v. 0.4.11 (28 June 2018)
 - camelizeKeys is now affecting `links` as well (https://github.com/yury-dymov/json-api-normalizer/pull/41)
