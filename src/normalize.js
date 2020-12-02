@@ -55,14 +55,14 @@ function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues 
       } else {
         ret[name].data = relationship.data;
       }
-
-      if (typeof relationship.meta !== 'undefined') {
-        ret[name].meta = camelizeNestedKeys(relationship.meta);
-      }
     }
 
     if (relationship.links) {
       ret[name].links = camelizeKeys ? camelizeNestedKeys(relationship.links) : relationship.links;
+    }
+
+    if (relationship.meta) {
+      ret[name].meta = camelizeKeys ? camelizeNestedKeys(relationship.meta) : relationship.meta;
     }
   });
   return ret;
