@@ -39,3 +39,5 @@ dist
 
 #PhpStorm and WebStorm settings folder
 .idea
+
+.DS_Store

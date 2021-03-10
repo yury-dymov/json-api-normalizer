@@ -1,6 +1,6 @@
 {
   "name": "json-api-normalizer",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "JSON API response normalizer",
   "main": "dist/bundle.js",
   "scripts": {
@@ -33,6 +33,7 @@
     "babel-eslint": "^10.0.1",
     "babel-loader": "^8.0.4",
     "chai": "^4.2.0",
+    "core-js": "3",
     "cross-env": "^5.2.0",
     "eslint": "^7.14.0",
     "eslint-config-airbnb": "^17.1.0",
@@ -46,7 +47,7 @@
     "rimraf": "^2.6.2",
     "webpack": "^5.9.0",
     "webpack-cli": "^4.2.0",
-    "webpack-node-externals": "^1.7.2"
+    "webpack-node-externals": "^2.5.2"
   },
   "dependencies": {
     "lodash": "^4.17.15"
