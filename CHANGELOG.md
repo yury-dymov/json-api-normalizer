@@ -1,3 +1,6 @@
+### v 1.0.1 (9th Mar 2021)
+- Fixing legacy browser support
+
 ### v 1.0.1 (2nd Dec 2020)
 - Deps update
 

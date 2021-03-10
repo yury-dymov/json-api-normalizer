@@ -1,6 +1,6 @@
 {
   "name": "json-api-normalizer",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "JSON API response normalizer",
   "main": "dist/bundle.js",
   "scripts": {
@@ -51,5 +51,13 @@
   },
   "dependencies": {
     "lodash": "^4.17.15"
-  }
+  },
+  "browserslist": [
+    "edge 16",
+    "safari 9",
+    "firefox 57",
+    "ie 11",
+    "ios 9",
+    "chrome 49"
+  ]
 }
