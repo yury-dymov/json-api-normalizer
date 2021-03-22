@@ -1,4 +1,7 @@
-### v 1.0.1 (9th Mar 2021)
+### v 1.0.4 (21st Mar 2021)
+- Fixing core-js missing deps
+
+### v 1.0.3 (9th Mar 2021)
 - Fixing legacy browser support
 
 ### v 1.0.1 (2nd Dec 2020)
