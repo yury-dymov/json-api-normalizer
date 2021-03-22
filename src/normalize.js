@@ -1,4 +1,3 @@
-import 'core-js';
 import camelCase from 'lodash/camelCase';
 import isArray from 'lodash/isArray';
 import isNull from 'lodash/isNull';
