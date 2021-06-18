@@ -82,46 +82,53 @@ function processMeta(metaObject, { camelizeKeys }) {
   return metaObject;
 }
 
-function extractEntities(json, { camelizeKeys, camelizeTypeValues }) {
+function extractEntities(json, { camelizeKeys, camelizeTypeValues, keepArrayResult }) {
   const ret = {};
 
   wrap(json).forEach((elem) => {
     const type = camelizeKeys ? camelCase(elem.type) : elem.type;
 
-    ret[type] = ret[type] || {};
-    ret[type][elem.id] = ret[type][elem.id] || {
+    const newElem = {
       id: elem.id,
     };
-    ret[type][elem.id].type = camelizeTypeValues ? camelCase(elem.type) : elem.type;
+    newElem.type = camelizeTypeValues ? camelCase(elem.type) : elem.type;
 
     if (camelizeKeys) {
-      ret[type][elem.id].attributes = {};
+      newElem.attributes = {};
 
       keys(elem.attributes).forEach((key) => {
-        ret[type][elem.id].attributes[camelCase(key)] = camelizeNestedKeys(elem.attributes[key]);
+        newElem.attributes[camelCase(key)] = camelizeNestedKeys(elem.attributes[key]);
       });
     } else {
-      ret[type][elem.id].attributes = elem.attributes;
+      newElem.attributes = elem.attributes;
     }
 
     if (elem.links) {
-      ret[type][elem.id].links = {};
+      newElem.links = {};
 
       keys(elem.links).forEach((key) => {
         const newKey = camelizeKeys ? camelCase(key) : key;
-        ret[type][elem.id].links[newKey] = elem.links[key];
+        newElem.links[newKey] = elem.links[key];
       });
     }
 
     if (elem.relationships) {
-      ret[type][elem.id].relationships = extractRelationships(elem.relationships, {
+      newElem.relationships = extractRelationships(elem.relationships, {
         camelizeKeys,
         camelizeTypeValues,
       });
     }
 
     if (elem.meta) {
-      ret[type][elem.id].meta = processMeta(elem.meta, { camelizeKeys });
+      newElem.meta = processMeta(elem.meta, { camelizeKeys });
+    }
+
+    if (keepArrayResult) {
+      ret[type] = ret[type] || [];
+      ret[type].push(newElem);
+    } else {
+      ret[type] = ret[type] || {};
+      ret[type][elem.id] = newElem;
     }
   });
 
@@ -190,12 +197,13 @@ export default function normalize(json, {
   filterEndpoint = true,
   camelizeKeys = true,
   camelizeTypeValues = true,
+  keepArrayResult = false,
   endpoint,
 } = {}) {
   const ret = {};
 
   if (json.data) {
-    merge(ret, extractEntities(json.data, { camelizeKeys, camelizeTypeValues }));
+    merge(ret, extractEntities(json.data, { camelizeKeys, camelizeTypeValues, keepArrayResult }));
   }
 
   if (json.included) {
