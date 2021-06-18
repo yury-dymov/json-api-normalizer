@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import normalize from '../dist/bundle';
+import normalize from '../src/normalize';
 
 describe('data is normalized', () => {
   const json = {
@@ -62,10 +62,43 @@ describe('data is normalized', () => {
     },
   };
 
+  const outputwithArray = {
+    post: [{
+      type: 'post',
+      id: 3,
+      attributes: {
+        text: 'hello',
+        number: 3,
+      },
+      links: {
+        self: 'http://www.example.com/post/3',
+      },
+      meta: {
+        likes: 35,
+      },
+    }, {
+      type: 'post',
+      id: 4,
+      attributes: {
+        text: 'hello world',
+        number: 4,
+      },
+      links: {
+        self: 'http://www.example.com/post/4',
+      },
+    },
+    ],
+  };
   it('data attributes => map: %{id => Object}', () => {
     const result = normalize(json);
 
     expect(result).to.deep.equal(output);
+  });
+
+  it('normalization with array result', () => {
+    const result = normalize(json, {keepArrayResult: true});
+
+    expect(result).to.deep.equal(outputwithArray);
   });
 
   it("data is empty shouldn't fail", () => {
@@ -87,8 +120,8 @@ describe('data is normalized', () => {
             'this-key-too': 3,
           },
           links: {
-            this_link: 'http://link.com'
-          }
+            this_link: 'http://link.com',
+          },
         },
       ],
     };
@@ -105,8 +138,8 @@ describe('data is normalized', () => {
             thisKeyToo: 3,
           },
           links: {
-            thisLink: 'http://link.com'
-          }
+            thisLink: 'http://link.com',
+          },
         },
       },
     };
@@ -672,8 +705,8 @@ describe('relationships', () => {
                 self: 'http://example.com/api/v1/post/2620/tags',
               },
               meta: {
-                count: 2
-              }
+                count: 2,
+              },
             },
           },
           id: 2620,
@@ -704,8 +737,8 @@ describe('relationships', () => {
                 self: 'http://example.com/api/v1/post/2620/tags',
               },
               meta: {
-                count: 2
-              }
+                count: 2,
+              },
             },
           },
         },
@@ -1104,7 +1137,7 @@ describe('complex', () => {
           },
         },
         links: {
-          post_blocks: 'http://link.com'
+          post_blocks: 'http://link.com',
         },
         type: 'post-block',
       },
@@ -1166,7 +1199,7 @@ describe('complex', () => {
         type: 'postBlock',
         id: 2454,
         links: {
-          post_blocks: 'http://link.com'
+          post_blocks: 'http://link.com',
         },
         attributes: {},
         relationships: {
@@ -1277,7 +1310,7 @@ describe('complex', () => {
         type: 'postBlock',
         id: 2454,
         links: {
-          postBlocks: 'http://link.com'
+          postBlocks: 'http://link.com',
         },
         attributes: {},
         relationships: {
@@ -1388,7 +1421,7 @@ describe('complex', () => {
         type: 'post-block',
         id: 2454,
         links: {
-          postBlocks: 'http://link.com'
+          postBlocks: 'http://link.com',
         },
         attributes: {},
         relationships: {
@@ -1549,7 +1582,7 @@ describe('complex', () => {
           type: 'question',
           id: 29,
           relationships: {
-            'postBlocks': {
+            postBlocks: {
               data: [
                 {
                   type: 'post-block',
