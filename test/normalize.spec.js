@@ -469,6 +469,62 @@ describe('relationships', () => {
     expect(result).to.deep.equal(output);
   });
 
+  it('non-empty to-many with meta', () => {
+    const json = {
+      data: [
+        {
+          type: 'post',
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: 4,
+                  type: 'tag',
+                  meta: {
+                    test: 'meta value'
+                  }
+                },
+              ],
+            },
+          },
+          id: 2620,
+          attributes: {
+            text: 'hello',
+          },
+        },
+      ],
+    };
+
+    const output = {
+      post: {
+        2620: {
+          type: 'post',
+          id: 2620,
+          attributes: {
+            text: 'hello',
+          },
+          relationships: {
+            tags: {
+              data: [
+                {
+                  id: 4,
+                  type: 'tag',
+                  meta: {
+                    test: 'meta value'
+                  }
+                },
+              ],
+            },
+          },
+        },
+      },
+    };
+
+    const result = normalize(json);
+
+    expect(result).to.deep.equal(output);
+  });
+
   it('keys camelized', () => {
     const json = {
       data: [

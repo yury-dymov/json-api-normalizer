@@ -43,15 +43,25 @@ function extractRelationships(relationships, { camelizeKeys, camelizeTypeValues 
 
     if (typeof relationship.data !== 'undefined') {
       if (isArray(relationship.data)) {
-        ret[name].data = relationship.data.map(e => ({
-          id: e.id,
-          type: camelizeTypeValues ? camelCase(e.type) : e.type,
-        }));
+        ret[name].data = relationship.data.map((e) => {
+          const data = {
+            id: e.id,
+            type: camelizeTypeValues ? camelCase(e.type) : e.type,
+          };
+          if (typeof e.meta !== 'undefined') {
+            data.meta = camelizeKeys ? camelizeNestedKeys(e.meta) : e.meta;
+          }
+          return data;
+        });
       } else if (!isNull(relationship.data)) {
         ret[name].data = {
           id: relationship.data.id,
           type: camelizeTypeValues ? camelCase(relationship.data.type) : relationship.data.type,
         };
+        if (typeof relationship.data.meta !== 'undefined') {
+          ret[name].data.meta = camelizeKeys
+            ? camelizeNestedKeys(relationship.data.meta) : relationship.data.meta;
+        }
       } else {
         ret[name].data = relationship.data;
       }
